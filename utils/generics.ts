@@ -8,9 +8,9 @@ import { Dictionary } from "../deps.ts";
    * @param current 
    * @returns 
    */
-export function entriesToDictionaryReducer(
-  acc: Dictionary<any>,
-  current: [string, any],
+export function entriesToDictionaryReducer<T>(
+  acc: Dictionary<T>,
+  current: [string, T],
 ) {
   if (current[1] !== undefined) {
     acc[current[0]] = current[1];
