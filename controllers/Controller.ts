@@ -1,8 +1,7 @@
-import { Request, Response } from '../deps.ts';
+import { Request, Response } from "../deps.ts";
 import { entriesToDictionaryReducer } from "../utils/generics.ts";
 
 export class Controller {
-
   static sendResponse(res: Response, payload: any) {
     /**
     * The default res-code is 200. We want to allow to change that. in That case,
@@ -10,7 +9,9 @@ export class Controller {
     * send 200 and the payload as received in this method.
     */
     res.setStatus(payload.code || 200);
-    const responsePayload = payload.payload !== undefined ? payload.payload : payload;
+    const responsePayload = payload.payload !== undefined
+      ? payload.payload
+      : payload;
     if (responsePayload instanceof Object) {
       res.json(responsePayload);
     } else {
@@ -27,9 +28,14 @@ export class Controller {
     }
   }
 
-  static async handleRequest(req: Request, res: Response, serviceOperation: any, validator?: any) {
+  static async handleRequest(
+    req: Request,
+    res: Response,
+    serviceOperation: any,
+    validator?: any,
+  ) {
     try {
-      let params = {...(req.body || req.query), ... req.params};
+      let params = { ...(req.body || req.query), ...req.params };
       if (validator) {
         params = Controller.getValidatedParams(req, validator);
       }
@@ -53,12 +59,15 @@ export class Controller {
   }
 
   private static collectRequestParams(req: Request) {
-    const headers = Array.from(req.headers.entries()).reduce(entriesToDictionaryReducer, {})
+    const headers = Array.from(req.headers.entries()).reduce(
+      entriesToDictionaryReducer,
+      {},
+    );
     return {
       ...headers,
       ...req.params,
       ...req.body,
       ...req.query,
-    }
+    };
   }
 }
