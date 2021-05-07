@@ -1,0 +1,41 @@
+{
+  "paths": {
+    "/pet": {
+      "post": {
+        "operationId": "addPet",
+        "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "ref": "#/components/schemas/Pet"
+            }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/Pet"
+            }
+          }
+        },
+        "description": "Pet object that needs to be added to the store",
+        "required": true
+        },
+        "responses": {
+          "405": {
+            "content": {},
+            "description": "Invalid input"
+          }
+        },
+        "security": {
+          "petstore_auth": [
+            "write:pets",
+            "read:pets"
+          ]
+        },
+        "summary": "Add a new pet to the store",
+        "tags": ["pet"],
+        "x-codegen-request-body-name": "body",
+        "x-eov-operation-handler": "controllers/PetController"
+      }
+    }
+  }
+}
