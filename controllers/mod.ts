@@ -1,5 +1,5 @@
-import {PetController} from "./PetController.ts";
+import { PetController } from "./PetController.ts";
 
 export const controllers = [
-  PetController
-]
+  PetController,
+];

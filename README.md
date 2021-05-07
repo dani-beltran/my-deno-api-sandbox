@@ -9,8 +9,9 @@ Execute in the project folder
 ```
 bin/run
 ```
+
 ```
- OPTIONS
+OPTIONS
  -d        Run it in development mode. It runs a watcher and doesnt check 
            typings for faster reloading.
  -u        Update locked dependencies before running the server.

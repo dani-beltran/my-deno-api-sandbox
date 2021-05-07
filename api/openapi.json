@@ -4,20 +4,20 @@
       "post": {
         "operationId": "addPet",
         "requestBody": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "ref": "#/components/schemas/Pet"
+          "content": {
+            "application/json": {
+              "schema": {
+                "ref": "#/components/schemas/Pet"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Pet"
+              }
             }
           },
-          "application/xml": {
-            "schema": {
-              "$ref": "#/components/schemas/Pet"
-            }
-          }
-        },
-        "description": "Pet object that needs to be added to the store",
-        "required": true
+          "description": "Pet object that needs to be added to the store",
+          "required": true
         },
         "responses": {
           "405": {

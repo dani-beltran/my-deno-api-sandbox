@@ -1,5 +1,5 @@
 import { Values } from "../deps.ts";
-import { Pet, PetSchema } from '../models/Pet.ts';
+import { Pet, PetSchema } from "../models/Pet.ts";
 
 export class PetService {
   static addPet(body: PetSchema) {
