@@ -10,7 +10,7 @@ export function loadRoutes(app: Opine) {
 }
 
 function loadOtherRoutes(app: Opine) {
-  app.get('/', (req, res) => {
+  app.get('/health', (_req, res) => {
     res.send('OK');
   });
 }
