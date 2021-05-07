@@ -1,4 +1,5 @@
 import { Request, Response } from '../deps.ts';
+import { entriesToDictionaryReducer } from "../utils/generics.ts";
 
 export class Controller {
 
@@ -18,7 +19,7 @@ export class Controller {
   }
 
   static sendError(res: Response, error: any) {
-    res.setStatus(error.code || 500);
+    res.setStatus(error.statusCode || 500);
     if (error.error instanceof Object) {
       res.json(error.error);
     } else {
@@ -26,75 +27,38 @@ export class Controller {
     }
   }
 
-  // static collectFile(req: Request, fieldName: string) {
-  //   let uploadedFileName = '';
-  //   if (req.files && req.files.length > 0) {
-  //     const fileObject = req.files.find(file => file.fieldname === fieldName);
-  //     if (fileObject) {
-  //       const fileArray = fileObject.originalname.split('.');
-  //       const extension = fileArray.pop();
-  //       fileArray.push(`_${Date.now()}`);
-  //       uploadedFileName = `${fileArray.join('')}.${extension}`;
-  //       fs.renameSync(path.join(config.FILE_UPLOAD_PATH, fileObject.filename),
-  //         path.join(config.FILE_UPLOAD_PATH, uploadedFileName));
-  //     }
-  //   }
-  //   return uploadedFileName;
-  // }
-
-  // static getRequestBodyName(req: Request) {
-  //   const codeGenDefinedBodyName = req.openapi.schema['x-codegen-req-body-name'];
-  //   if (codeGenDefinedBodyName !== undefined) {
-  //     return codeGenDefinedBodyName;
-  //   }
-  //   const refObjectPath = req.openapi.schema.requestBody.content['application/json'].schema.$ref;
-  //   if (refObjectPath !== undefined && refObjectPath.length > 0) {
-  //     return (refObjectPath.substr(refObjectPath.lastIndexOf('/') + 1));
-  //   }
-  //   return 'body';
-  // }
-
-  // static collectRequestParams(req: Request) {
-  //   const requestParams = {};
-  //   if (req.openapi.schema.requestBody !== undefined) {
-  //     const { content } = req.openapi.schema.requestBody;
-  //     if (content['application/json'] !== undefined) {
-  //       const requestBodyName = camelCase(this.getRequestBodyName(req));
-  //       requestParams[requestBodyName] = req.body;
-  //     } else if (content['multipart/form-data'] !== undefined) {
-  //       Object.keys(content['multipart/form-data'].schema.properties).forEach(
-  //         (property) => {
-  //           const propertyObject = content['multipart/form-data'].schema.properties[property];
-  //           if (propertyObject.format !== undefined && propertyObject.format === 'binary') {
-  //             requestParams[property] = this.collectFile(req, property);
-  //           } else {
-  //             requestParams[property] = req.body[property];
-  //           }
-  //         },
-  //       );
-  //     }
-  //   }
-
-  //   req.openapi.schema.parameters.forEach((param) => {
-  //     if (param.in === 'path') {
-  //       requestParams[param.name] = req.openapi.pathParams[param.name];
-  //     } else if (param.in === 'query') {
-  //       requestParams[param.name] = req.query[param.name];
-  //     } else if (param.in === 'header') {
-  //       requestParams[param.name] = req.headers[param.name];
-  //     }
-  //   });
-  //   return requestParams;
-  // }
-
-
-  static async handleRequest(req: Request, res: Response, serviceOperation: any) {
+  static async handleRequest(req: Request, res: Response, serviceOperation: any, validator?: any) {
     try {
-      // const serviceResponse = await serviceOperation(this.collectRequestParams(req));
-      const serviceResponse = await serviceOperation();
+      let params = {...(req.body || req.query), ... req.params};
+      if (validator) {
+        params = Controller.getValidatedParams(req, validator);
+      }
+      const serviceResponse = await serviceOperation(params);
       Controller.sendResponse(res, serviceResponse);
     } catch (error) {
+      console.error(error);
       Controller.sendError(res, error);
+    }
+  }
+
+  private static getValidatedParams(req: Request, validator: any) {
+    const reqParams = Controller.collectRequestParams(req);
+    const [error, params] = validator(reqParams);
+    if (error) {
+      error.statusCode = 400;
+      throw error;
+    }
+    // Remove the params with undefined values
+    return Object.entries(params).reduce(entriesToDictionaryReducer, {});
+  }
+
+  private static collectRequestParams(req: Request) {
+    const headers = Array.from(req.headers.entries()).reduce(entriesToDictionaryReducer, {})
+    return {
+      ...headers,
+      ...req.params,
+      ...req.body,
+      ...req.query,
     }
   }
 }

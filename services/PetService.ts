@@ -1,16 +1,13 @@
-import { Pet } from '../models/Pet.ts';
+import { Values } from "../deps.ts";
+import { Pet, PetSchema } from '../models/Pet.ts';
 
 export class PetService {
-  static addPet() {//{ body }: { body: any }) {
-    const testPet = {
-      description: 'Just a dog',
-      species: 'dog',
-    };
-    return Pet.create([testPet]);
+  static addPet(body: PetSchema) {
+    return Pet.create([body as Values]);
   }
 
   static getPet({ id }: { id: number }) {
-    return 'test ' + id;
+    return Pet.fetchById(id);
   }
 
   static listPet() {

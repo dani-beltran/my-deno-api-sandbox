@@ -1,4 +1,4 @@
-import { Database, SQLite3Connector, opine, Opine, Server } from "./deps.ts";
+import { Database, SQLite3Connector, opine, Opine, Server, json } from "./deps.ts";
 import { loadRoutes } from './routes/mod.ts';
 import { Pet } from "./models/Pet.ts";
 
@@ -33,6 +33,7 @@ export class AppServer {
   async run() {
     this.registedModels();
     await this.db.sync();
+    this.opineServer.use(json())
     loadRoutes(this.opineServer);
     this.httpServer = this.opineServer.listen(this.port, () => {
       console.log(`HTTP Server running on port ${this.port}`)
