@@ -2,7 +2,7 @@ import { Request, Response } from "../deps.ts";
 import { Controller } from "./Controller.ts";
 import { PetService } from "../services/PetService.ts";
 import { Pet } from "../models/Pet.ts";
-import { getUpdateValidator, getValidator, listValidator } from "../logic/validators.ts";
+import { getPatchValidator, getUpdateValidator, getValidator, listValidator } from "../logic/validators.ts";
 
 export class PetController {
   static className = "petController";
@@ -43,14 +43,14 @@ export class PetController {
     );
   }
 
-  // static async patchPet(request: Request, response: Response<any>) {
-  //   await Controller.handleRequest(
-  //     request,
-  //     response,
-  //     PetService.updatePet,
-  //     Pet.validator,
-  //   );
-  // }
+  static async patchPet(request: Request, response: Response<any>) {
+    await Controller.handleRequest(
+      request,
+      response,
+      PetService.updatePet,
+      getPatchValidator(Pet),
+    );
+  }
 
   static async deletePet(request: Request, response: Response<any>) {
     await Controller.handleRequest(

@@ -1,4 +1,4 @@
-import { Model, Schema, string, Type, unknown } from "../deps.ts";
+import { Model, Schema, string, Type, unknown, _ } from "../deps.ts";
 
 // 
 // Get schema and validation
@@ -34,8 +34,16 @@ export type ListParams = Type<typeof listSchema>;
 // Update validator
 //
 export function getUpdateValidator(model: typeof Model) {
-  // Merge needs raw schema
   const schema = Schema.merge({id: unknown.number().integer().gt(0)}, (<any>model).schema);
+  return schema.destruct();
+}
+
+//
+// Patch validator
+//
+export function getPatchValidator(model: typeof Model) {
+  const newSchema = convertAllSchemaItemsToOptional((<any>model).schema)
+  const schema = Schema.merge({id: unknown.number().integer().gt(0)}, newSchema);
   return schema.destruct();
 }
 
@@ -54,4 +62,13 @@ function toDefault<T, K>(defaultValue: K) {
       return x;
     }
   };
+}
+
+function convertAllSchemaItemsToOptional(schema: {[key: string]: any}) {
+  const keys = Object.keys(schema);
+  const res = {} as any;
+  keys.forEach((key) => {
+    res[key] = Schema.either(Schema.either(null, undefined), schema[key])
+  });
+  return res;
 }
