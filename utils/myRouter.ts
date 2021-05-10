@@ -1,3 +1,5 @@
+// This is for an attemp to read the API schema from an openapi file
+
 // import { controllers } from '../controllers/mod.ts';
 
 // controllers.forEach((ctrl) => {
@@ -5,7 +7,7 @@
 // });
 
 export async function runRouter() {
-  const schema = await loadApiSchema();
+  const _schema = await loadApiSchema();
 }
 
 async function loadApiSchema() {

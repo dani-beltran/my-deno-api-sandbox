@@ -1,13 +1,13 @@
 import { Request, Response } from "../deps.ts";
-import { Controller } from "./Controller.ts";
+import { Controller, CreatedResponse, UpdatedResponse } from "./Controller.ts";
 import { PetService } from "../services/PetService.ts";
-import { Pet } from "../models/Pet.ts";
+import { IPet, Pet } from "../models/Pet.ts";
 import { ValidatorFactory } from "../logic/ValidatorFactory.ts";
 
 export class PetController {
   static className = "petController";
 
-  static async addPet(request: Request, response: Response<any>) {
+  static async addPet(request: Request, response: Response<CreatedResponse>) {
     await Controller.handleRequest(
       request,
       response,
@@ -16,7 +16,7 @@ export class PetController {
     );
   }
 
-  static async getPet(request: Request, response: Response<any>) {
+  static async getPet(request: Request, response: Response<IPet>) {
     await Controller.handleRequest(
       request,
       response,
@@ -25,7 +25,7 @@ export class PetController {
     );
   }
 
-  static async listPet(request: Request, response: Response<any>) {
+  static async listPet(request: Request, response: Response<IPet[]>) {
     await Controller.handleRequest(
       request,
       response,
@@ -34,7 +34,7 @@ export class PetController {
     );
   }
 
-  static async putPet(request: Request, response: Response<any>) {
+  static async putPet(request: Request, response: Response<UpdatedResponse>) {
     await Controller.handleRequest(
       request,
       response,
@@ -43,7 +43,7 @@ export class PetController {
     );
   }
 
-  static async patchPet(request: Request, response: Response<any>) {
+  static async patchPet(request: Request, response: Response<UpdatedResponse>) {
     await Controller.handleRequest(
       request,
       response,
@@ -52,7 +52,7 @@ export class PetController {
     );
   }
 
-  static async deletePet(request: Request, response: Response<any>) {
+  static async deletePet(request: Request, response: Response<UpdatedResponse>) {
     await Controller.handleRequest(
       request,
       response,

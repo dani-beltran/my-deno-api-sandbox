@@ -1,6 +1,6 @@
 import { Values } from "../deps.ts";
 import { fetchById, fetchList } from "../logic/basics.ts";
-import { ListParams } from "../logic/validators.ts";
+import { ListParams } from "../logic/ValidatorFactory.ts";
 import { Pet, IPet } from "../models/Pet.ts";
 
 interface IUpdatePet extends IPet {

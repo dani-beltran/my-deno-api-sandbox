@@ -1,5 +1,15 @@
+// deno-lint-ignore-file no-explicit-any
 import { Request, Response } from "../deps.ts";
 import { entriesToDictionaryReducer } from "../utils/generics.ts";
+
+export type CreatedResponse = {
+  affectedRows: number,
+  lastInsertId: number
+}
+
+export type UpdatedResponse = {
+  affectedRows: number,
+}
 
 export class Controller {
   static sendResponse(res: Response, payload: any) {

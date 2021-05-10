@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { Model, Schema, string, Type, unknown } from "../deps.ts";
 
 export type ListParams = Type<typeof ValidatorFactory.listSchema>;

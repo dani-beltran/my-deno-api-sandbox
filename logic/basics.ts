@@ -1,5 +1,5 @@
 import { Model } from "../deps.ts";
-import { ListParams } from "./validators.ts";
+import { ListParams } from "./ValidatorFactory.ts";
 
 export async function fetchById(model: typeof Model, id: number) {
   const pet = await model.where("id", id).get() as Model;
