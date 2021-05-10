@@ -1,13 +1,14 @@
 #!/bin/bash -e
 
 # 
-# This runs the server with Deno.
+# This script runs the server with Deno.
 #
 # Run it from the project folder.
 #
 # OPTIONS
 # -d        Run it in development mode. It runs a watcher and doesnt check 
 #           typings for faster reloading.
+# -h    Show help instructions on this script
 # -u        Update locked dependencies before running the server.
 # -l        Run linter before running the server.
 # -r        Reload all cached dependencies before running server.
@@ -19,16 +20,29 @@ dev=false
 update=false
 lint=false
 reload=false
+help=false
 
-while getopts dulrt flag
+while getopts dulrth flag
 do
   case "${flag}" in
       d) dev=true;;
       u) update=true;;
       l) lint=true;;
       r) reload=true;;
+      h) help=true;;
   esac
 done
+
+if "$help"; then
+    echo "This script runs the server with Deno."
+    echo "OPTIONS: "
+    echo "-d    Run it in development mode. It runs a watcher and doesnt check typings for faster reloading. "
+    echo "-h    Show help instructions on this script"
+    echo "-l    Run linter before running the server."
+    echo "-r    Reload all cached dependencies before running server."
+    echo "-u    Update locked dependencies before running the server."
+    exit
+fi
 
 if "$reload"; then
     echo "Reloading cached dependencies..."
