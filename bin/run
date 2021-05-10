@@ -34,6 +34,7 @@ do
 done
 
 if "$help"; then
+    echo ""
     echo "This script runs the server with Deno."
     echo "OPTIONS: "
     echo "-d    Run it in development mode. It runs a watcher and doesnt check typings for faster reloading. "
@@ -41,6 +42,7 @@ if "$help"; then
     echo "-l    Run linter before running the server."
     echo "-r    Reload all cached dependencies before running server."
     echo "-u    Update locked dependencies before running the server."
+    echo ""
     exit
 fi
 
