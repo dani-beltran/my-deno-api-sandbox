@@ -3,6 +3,9 @@ import { Model, Schema, string, Type, unknown } from "../deps.ts";
 
 export type ListParams = Type<typeof ValidatorFactory.listSchema>;
 
+/**
+ * This class can build generic endpoint validators using computed-types library.
+ */
 export class ValidatorFactory {
   static getSchema = {
     id: unknown.number().integer().gt(0),
