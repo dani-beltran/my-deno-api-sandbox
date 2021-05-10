@@ -2,7 +2,7 @@ import { Request, Response } from "../deps.ts";
 import { Controller } from "./Controller.ts";
 import { PetService } from "../services/PetService.ts";
 import { Pet } from "../models/Pet.ts";
-import { getPatchValidator, getUpdateValidator, getValidator, listValidator } from "../logic/validators.ts";
+import { ValidatorFactory } from "../logic/ValidatorFactory.ts";
 
 export class PetController {
   static className = "petController";
@@ -21,7 +21,7 @@ export class PetController {
       request,
       response,
       PetService.getPet,
-      getValidator,
+      ValidatorFactory.buildGetValidator(),
     );
   }
 
@@ -30,7 +30,7 @@ export class PetController {
       request,
       response,
       PetService.listPet,
-      listValidator,
+      ValidatorFactory.buildListValidator(),
     );
   }
 
@@ -39,7 +39,7 @@ export class PetController {
       request,
       response,
       PetService.updatePet,
-      getUpdateValidator(Pet),
+      ValidatorFactory.buildUpdateValidator(Pet),
     );
   }
 
@@ -48,7 +48,7 @@ export class PetController {
       request,
       response,
       PetService.updatePet,
-      getPatchValidator(Pet),
+      ValidatorFactory.buildPatchValidator(Pet),
     );
   }
 
@@ -57,7 +57,7 @@ export class PetController {
       request,
       response,
       PetService.deletePet,
-      getValidator,
+      ValidatorFactory.buildDeleteValidator(),
     );
   }
 
