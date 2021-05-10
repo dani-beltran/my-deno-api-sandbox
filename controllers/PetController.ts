@@ -2,7 +2,7 @@ import { Request, Response } from "../deps.ts";
 import { Controller, CreatedResponse, UpdatedResponse } from "./Controller.ts";
 import { PetService } from "../services/PetService.ts";
 import { IPet, Pet } from "../models/Pet.ts";
-import { ValidatorFactory } from "../logic/ValidatorFactory.ts";
+import { ValidatorFactory } from "../utils/ValidatorFactory.ts";
 
 export class PetController {
   static className = "petController";

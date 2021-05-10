@@ -1,6 +1,6 @@
 import { Values } from "../deps.ts";
-import { fetchById, fetchList } from "../logic/basics.ts";
-import { ListParams } from "../logic/ValidatorFactory.ts";
+import { ModelFetcher } from "../utils/ModelFetcher.ts";
+import { ListParams } from "../utils/ValidatorFactory.ts";
 import { Pet, IPet } from "../models/Pet.ts";
 
 interface IUpdatePet extends IPet {
@@ -13,11 +13,11 @@ export class PetService {
   }
 
   static getPet({ id }: { id: number }) {
-    return fetchById(Pet, id);
+    return ModelFetcher.fetchById(Pet, id);
   }
 
   static listPet(params: ListParams) {
-    return fetchList(Pet, params);
+    return ModelFetcher.fetchList(Pet, params);
   }
 
   static updatePet({id, ...body}: IUpdatePet ) {
