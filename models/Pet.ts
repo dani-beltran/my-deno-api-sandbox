@@ -6,14 +6,10 @@ export enum Species {
   Mice = "mice",
 }
 
-const schema = Schema({
-  name: string.trim().normalize().between(3, 40).optional(),
-  species: Schema.enum(Species, "Invalid species"),
-  age: number.integer().gt(0),
-  inssurancePolicy: string.regexp(/^[a-z0-9]{10,64}$/).trim().optional(),
-  description: string.trim().optional(),
-});
-export type PetSchema = Type<typeof schema>;
+/**
+ * Interface for Pet resource
+ */
+export type IPet = Type<typeof Pet.schema>;
 
 /**
  * Pet model represents the profile of a adoptable pet in the store.
@@ -60,6 +56,13 @@ export class Pet extends Model {
   static defaults = {
     name: "Anonymous",
   };
-  static validator = schema.destruct();
+  static schema = {
+    name: string.trim().normalize().between(3, 40).optional(),
+    species: Schema.enum(Species, "Invalid species"),
+    age: number.integer().gt(0),
+    inssurancePolicy: string.regexp(/^[a-z0-9]{10,64}$/).trim().optional(),
+    description: string.trim().optional(),
+  };
+  static validator = Schema(Pet.schema).destruct();
 
 }

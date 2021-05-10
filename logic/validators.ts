@@ -1,4 +1,4 @@
-import { Schema, string, Type, unknown } from "../deps.ts";
+import { Model, Schema, string, Type, unknown } from "../deps.ts";
 
 // 
 // Get schema and validation
@@ -29,6 +29,15 @@ const listSchema = Schema({
  */
 export const listValidator = listSchema.destruct();
 export type ListParams = Type<typeof listSchema>;
+
+//
+// Update validator
+//
+export function getUpdateValidator(model: typeof Model) {
+  // Merge needs raw schema
+  const schema = Schema.merge({id: unknown.number().integer().gt(0)}, (<any>model).schema);
+  return schema.destruct();
+}
 
 
 /**

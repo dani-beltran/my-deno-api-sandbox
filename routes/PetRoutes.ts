@@ -8,6 +8,7 @@ export class PetRoutes {
     router.post("/", PetController.addPet);
     router.get("/:id", PetController.getPet);
     router.get("/", PetController.listPet);
+    router.put("/:id", PetController.putPet);
 
     app.use("/pets", router);
   }
