@@ -1,4 +1,6 @@
 import { Values } from "../deps.ts";
+import { fetchById, fetchList } from "../logic/basics.ts";
+import { ListParams } from "../logic/validators.ts";
 import { Pet, PetSchema } from "../models/Pet.ts";
 
 export class PetService {
@@ -7,11 +9,10 @@ export class PetService {
   }
 
   static getPet({ id }: { id: number }) {
-    return Pet.fetchById(id);
+    return fetchById(Pet, id);
   }
 
-  static listPet() {
-    const maxItems = 10;
-    return Pet.limit(maxItems).all();
+  static listPet(params: ListParams) {
+    return fetchList(Pet, params);
   }
 }

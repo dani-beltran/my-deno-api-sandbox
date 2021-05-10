@@ -1,5 +1,8 @@
-import { Schema, string, unknown } from "../deps.ts";
+import { Schema, string, Type, unknown } from "../deps.ts";
 
+// 
+// Get schema and validation
+//
 const getSchema = Schema({
   id: unknown.number().integer().gt(0),
 });
@@ -8,13 +11,16 @@ const getSchema = Schema({
  */
 export const getValidator = getSchema.destruct();
 
+//
+// List schema and validation
+//
 const listSchema = Schema({
   page: unknown.number().integer().gt(0).optional().transform(toDefault(1)),
   pageSize: unknown.number().integer().gt(0).optional().transform(
     toDefault(50),
   ),
-  order: Schema.either("ASC" as const, "DESC" as const).optional().transform(
-    toDefault("ASC" as const),
+  order: Schema.either("asc" as const, "desc" as const).optional().transform(
+    toDefault("asc" as const),
   ),
   sortBy: string.max(200).trim().optional(),
 });
@@ -22,6 +28,8 @@ const listSchema = Schema({
  * Default List validator
  */
 export const listValidator = listSchema.destruct();
+export type ListParams = Type<typeof listSchema>;
+
 
 /**
  * Returns a function that can be used by Schema.transform to set a default

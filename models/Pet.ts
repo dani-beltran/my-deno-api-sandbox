@@ -62,10 +62,4 @@ export class Pet extends Model {
   };
   static validator = schema.destruct();
 
-  // Methods
-  //////////////////////////////////////////////////////////////////////////////
-  static async fetchById(id: number) {
-    const pet = await Pet.where("id", id).get() as Pet;
-    return pet;
-  }
 }
