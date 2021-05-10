@@ -3,7 +3,6 @@ import { PetRoutes } from "./PetRoutes.ts";
 
 export function loadRoutes(app: Opine) {
   loadOtherRoutes(app);
-
   // Resources routes
   PetRoutes.load(app);
 }

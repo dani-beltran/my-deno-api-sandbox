@@ -20,8 +20,12 @@ export class PetService {
     return fetchList(Pet, params);
   }
 
-  static updatePet<T>({id, ...body}: IUpdatePet ) {
+  static updatePet({id, ...body}: IUpdatePet ) {
     const data = body as IPet as Values;
     return Pet.where("id", id).update(data);
+  }
+
+  static deletePet({id}: {id:number}) {
+    return Pet.where('id', id).delete();
   }
 }

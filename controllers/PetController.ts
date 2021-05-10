@@ -52,13 +52,13 @@ export class PetController {
   //   );
   // }
 
-  // static async deletePet(request: Request, response: Response<any>) {
-  //   await Controller.handleRequest(
-  //     request,
-  //     response,
-  //     PetService.deletePet,
-  //     deleteValidator,
-  //   );
-  // }
+  static async deletePet(request: Request, response: Response<any>) {
+    await Controller.handleRequest(
+      request,
+      response,
+      PetService.deletePet,
+      getValidator,
+    );
+  }
 
 }
