@@ -1,5 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
-import { Model, Schema, string, Type, unknown } from "../deps.ts";
+import { Schema, string, Type, unknown } from "../deps.ts";
+import { IModel } from "../types/denodb.ts";
 
 export type ListParams = Type<typeof ValidatorFactory.listSchema>;
 
@@ -43,13 +44,13 @@ export class ValidatorFactory {
 
   /**
  * 
- * @param model 
+ * @param Model model class
  * @returns a validator for UPDATE resource
  */
-  static buildUpdateValidator(model: typeof Model) {
+  static buildUpdateValidator(Model: IModel) {
     const schema = Schema.merge(
       ValidatorFactory.getSchema,
-      (<any> model).schema,
+      Model.schema,
     );
     return schema.destruct();
   }
@@ -65,12 +66,12 @@ export class ValidatorFactory {
 
   /**
  * 
- * @param model 
+ * @param Model model class
  * @returns a validator for PATCH resource
  */
-  static buildPatchValidator(model: typeof Model) {
+  static buildPatchValidator(Model: IModel) {
     const newSchema = ValidatorFactory.convertAllSchemaItemsToOptional(
-      (<any> model).schema,
+      Model.schema,
     );
     const schema = Schema.merge(
       { id: unknown.number().integer().gt(0) },
