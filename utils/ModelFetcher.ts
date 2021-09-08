@@ -2,7 +2,7 @@ import { Model } from "../deps.ts";
 import { ListParams } from "./ValidatorFactory.ts";
 
 /**
- * This class provides methods for fetching models in different ways
+ * This class provides methods for fetching DenoDB models in different ways
  */
 export class ModelFetcher {
   /**

@@ -5,7 +5,7 @@ import { IModel } from "../types/denodb.ts";
 export type ListParams = Type<typeof ValidatorFactory.listSchema>;
 
 /**
- * This class can build generic endpoint validators using computed-types library.
+ * This class can build generic endpoint validators using the "computed-types" library.
  */
 export class ValidatorFactory {
   static getSchema = {
