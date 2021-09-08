@@ -27,7 +27,49 @@ Execute in the project folder
 bin/test
 ```
 
-## Notes
+## Project structure
+
+### /bin
+
+Binary files to execute the app, tests or others.
+
+### /controllers
+
+HTTP API REST controllers. Classes performing HTTP parametters validation and
+pointing to the corresponding service.
+
+### /logic
+
+Classes containing business logic that can be reused in different services.
+
+### /models
+
+API REST models. Classes responsible for accesssing and storing the resources data.
+
+### /routes
+
+HTTP API REST routes. Classes describing the URL patterns to perform operations, 
+GET, POST, PUT, PATCH and DELETE on resources.
+
+### /services
+
+Classes responsible for the interaction with the API resources. The services are
+a way to decouple the logic of the app from how to access this logic. A service
+could be accessed through the controllers for HTTP requests or alternatively 
+through websockets or some other way.
+
+### /types
+
+Typescript type definitions.
+
+### /utils
+
+Files containing code that can be helpful for the app, but also can be ported 
+to other apps.
+
+## Tips
+
+### Dependencies paths
 
 Deno uses relative path importing. To use absolute paths you need to implement
 import-map.json
