@@ -1,3 +1,4 @@
 *.sqlite
 .env
 .notes
+.DS_Store
