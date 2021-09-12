@@ -2,6 +2,10 @@
 
 This is just a dummy CRUD API to test out Deno
 
+## Dependencies
+
+You need deno 1.13.2 (release, x86_64-apple-darwin) installed in your system.
+
 ## How to run the API server
 
 Execute in the project folder
