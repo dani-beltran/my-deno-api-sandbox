@@ -4,7 +4,7 @@ import { PetService } from "../services/PetService.ts";
 import { IPet, Pet } from "../models/Pet.ts";
 import { ValidatorFactory } from "../utils/ValidatorFactory.ts";
 
-export class PetController {
+export abstract class PetController {
   static className = "petController";
 
   static async addPet(request: Request, response: Response<CreatedResponse>) {

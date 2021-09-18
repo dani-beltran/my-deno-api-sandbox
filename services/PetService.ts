@@ -7,7 +7,7 @@ interface IUpdatePet extends IPet {
   id: number;
 }
 
-export class PetService {
+export abstract class PetService {
   static addPet(body: IPet) {
     return Pet.create([body as Values]);
   }

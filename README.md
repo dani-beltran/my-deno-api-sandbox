@@ -71,9 +71,16 @@ Typescript type definitions.
 Files containing code that can be helpful for the app, but also can be ported 
 to other apps.
 
-## Tips
+## FAQs
 
-### Dependencies paths
+### Why using relative path module importing ?
 
 Deno uses relative path importing. To use absolute paths you need to implement
 import-map.json
+
+### Why using abstract classes for controllers, services and routes ?
+
+To make sure they are not instantiated. This is because my intention is to make
+these classes stateless and inmmutable, and so, predictable. They will always 
+behave the same for every request. They behave more like a collection of functions 
+that are wrapped in classes just for naming convinience. 

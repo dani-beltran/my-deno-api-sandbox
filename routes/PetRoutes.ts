@@ -1,7 +1,7 @@
 import { Opine, Router } from "../deps.ts";
 import { PetController } from "../controllers/PetController.ts";
 
-export class PetRoutes {
+export abstract class PetRoutes {
   static load(app: Opine) {
     const router = new Router();
 
