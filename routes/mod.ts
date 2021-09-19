@@ -1,5 +1,5 @@
 import { Opine } from "../deps.ts";
-import { PetRouter } from "./PetRoutes.ts";
+import { PetRouter } from "./PetRouter.ts";
 
 export function loadRoutes(app: Opine) {
   loadOtherRoutes(app);
