@@ -6,50 +6,35 @@ import { lowerFirst, path, upperFirst } from "./deps.ts";
 const componentType = Deno.args[0];
 const name = Deno.args[1];
 const pathToFolder = Deno.args[2];
-const fileName = `${upperFirst(name)}${componentType !== 'model' ? upperFirst(componentType) : ''}`;
+const fileName = getFilename(name);
+generate(componentType, name, pathToFolder);
+console.info(`Created ${componentType} named ${fileName} into folder ${pathToFolder}`);
 
-console.info(`Creating ${componentType} named ${fileName} into folder ${pathToFolder}`);
-
-switch(componentType) {
-  case 'controller':
-    generateController(name, pathToFolder);
-    break;
-  case 'model':
-    generateModel(name, pathToFolder);
-    break;
-  case 'service':
-    generateService(name, pathToFolder);
-    break;
-  default:
+async function generate(componentType: string, name: string, pathToFolder: string) {
+  if (!isValidComponentType(componentType)) {
     console.error('The component you\'re requesting to create is not supported');
-}
-
-
-async function generateController(name: string, pathToFolder: string) {
+    return;
+  }
   const capitalizedName = upperFirst(name);
   const templatesDir = getTemplateDir();
-  let controllerTemplate = await Deno.readTextFile(`${templatesDir}/controller-template.txt`);
-  controllerTemplate = controllerTemplate.replaceAll('${capitalizedName}', capitalizedName);
-  controllerTemplate = controllerTemplate.replaceAll('${name}', lowerFirst(name));
-  await Deno.writeTextFile(`${pathToFolder}/${capitalizedName}Controller.ts`, controllerTemplate);
+  let template = await Deno.readTextFile(`${templatesDir}/${componentType}-template.txt`);
+  template = template.replaceAll('${capitalizedName}', capitalizedName);
+  template = template.replaceAll('${name}', lowerFirst(name));
+  await Deno.writeTextFile(`${pathToFolder}/${getFilename(name)}.ts`, template);
 }
 
-async function generateService(name: string, pathToFolder: string) {
-  const capitalizedName = upperFirst(name);
-  const templatesDir = getTemplateDir();
-  let serviceTemplate = await Deno.readTextFile(`${templatesDir}/service-template.txt`);
-  serviceTemplate = serviceTemplate.replaceAll('${capitalizedName}', capitalizedName);
-  serviceTemplate = serviceTemplate.replaceAll('${name}', lowerFirst(name));
-  await Deno.writeTextFile(`${pathToFolder}/${capitalizedName}Service.ts`, serviceTemplate);
+function isValidComponentType(value: string) {
+  const validValues = [
+    'controller',
+    'model',
+    'service',
+    'router'
+  ];
+  return validValues.indexOf(value) !== -1;
 }
 
-async function generateModel(name: string, pathToFolder: string) {
-  const capitalizedName = upperFirst(name);
-  const templatesDir = getTemplateDir();
-  let modelTemplate = await Deno.readTextFile(`${templatesDir}/model-template.txt`);
-  modelTemplate = modelTemplate.replaceAll('${capitalizedName}', capitalizedName);
-  modelTemplate = modelTemplate.replaceAll('${name}', lowerFirst(name));
-  await Deno.writeTextFile(`${pathToFolder}/${capitalizedName}.ts`, modelTemplate);
+function getFilename(resourceName: string) {
+  return `${upperFirst(resourceName)}${componentType !== 'model' ? upperFirst(componentType) : ''}`;
 }
 
 function getTemplateDir() {
