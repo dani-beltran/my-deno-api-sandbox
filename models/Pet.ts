@@ -1,5 +1,4 @@
 import { DataTypes, Model, number, Schema, string, Type } from "../deps.ts";
-
 export enum Species {
   Dog = "dog",
   Cat = "cat",
@@ -7,22 +6,12 @@ export enum Species {
 }
 
 /**
- * Interface for Pet resource
- */
-export type PetSchema = Type<typeof Pet.schema>;
-
-/**
  * Pet model represents the profile of a adoptable pet in the store.
- * 
- *   @property name: string | undefined;
- * 
- *   @property species: Species;
- * 
- *   @property age: number;
- * 
- *   @property inssurancePolicy: string | undefined;
- * 
- *   @property description: string | undefined;
+ * @property name: string | undefined;
+ * @property species: Species;
+ * @property age: number;
+ * @property inssurancePolicy: string | undefined;
+ * @property description: string | undefined;
  */
 export class Pet extends Model {
   static table = "pets";
@@ -66,3 +55,8 @@ export class Pet extends Model {
   static validator = Schema(Pet.schema).destruct();
 
 }
+
+/**
+ * Type of Pet's schema.
+ */
+ export type PetSchema = Type<typeof Pet.schema>;

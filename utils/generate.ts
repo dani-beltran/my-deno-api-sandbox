@@ -141,7 +141,7 @@ async function generateModel(name: string, pathToFolder: string) {
 
     /**
      * ${capitalizedName} model represents...
-     *   @property name: string | undefined;
+     * @property name: string | undefined;
      */
     export class ${capitalizedName} extends Model {
       static table = "${lowerFirst(name)}s";
@@ -166,7 +166,7 @@ async function generateModel(name: string, pathToFolder: string) {
     }
     
     /**
-     * Type for ${capitalizedName} resource
+     * Type of ${capitalizedName}'s schema.
      */
     export type ${capitalizedName}Schema = Type<typeof ${capitalizedName}.schema>;
   `;
