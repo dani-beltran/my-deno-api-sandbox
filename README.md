@@ -84,3 +84,8 @@ To make sure they are not instantiated. This is because my intention is to make
 these classes stateless and inmmutable, and so, predictable. They will always 
 behave the same for every request. They behave more like a collection of functions 
 that are wrapped in classes just for naming convinience. 
+
+### I generated a controller, service, router and model for a resource, but it doesn't work
+
+After generation, you need to add the router in /routes/mod.ts and the model
+in AppServer.ts registerModels function.
