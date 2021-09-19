@@ -18,7 +18,7 @@ switch(componentType) {
     // generateModel(name, pathToFolder);
     break;
   case 'service':
-    // generateService(name, pathToFolder);
+    generateService(name, pathToFolder);
     break;
   default:
     console.error('The component you\'re requesting to create is not supported');
@@ -96,3 +96,40 @@ async function generateController(name: string, pathToFolder: string) {
   await Deno.writeTextFile(`${pathToFolder}/${capitalizedName}Controller.ts`, controllerTemplate);
 }
 
+async function generateService(name: string, pathToFolder: string) {
+  const capitalizedName = upperFirst(name);
+  const serviceTemplate = `
+    import { Values } from "../deps.ts";
+    import { ModelFetcher } from "../utils/ModelFetcher.ts";
+    import { ListParams } from "../utils/ValidatorFactory.ts";
+    import { ${capitalizedName}, I${capitalizedName} } from "../models/${capitalizedName}.ts";
+    
+    interface IUpdate${capitalizedName} extends I${capitalizedName} {
+      id: number;
+    }
+    
+    export abstract class ${capitalizedName}Service {
+      static add${capitalizedName}(body: I${capitalizedName}) {
+        return ${capitalizedName}.create([body as Values]);
+      }
+    
+      static get${capitalizedName}({ id }: { id: number }) {
+        return ModelFetcher.fetchById(${capitalizedName}, id);
+      }
+    
+      static list${capitalizedName}(params: ListParams) {
+        return ModelFetcher.fetchList(${capitalizedName}, params);
+      }
+    
+      static update${capitalizedName}({id, ...body}: IUpdate${capitalizedName} ) {
+        const data = body as I${capitalizedName} as Values;
+        return ${capitalizedName}.where("id", id).update(data);
+      }
+    
+      static delete${capitalizedName}({id}: {id:number}) {
+        return ${capitalizedName}.where('id', id).delete();
+      }
+    }
+  `;
+  await Deno.writeTextFile(`${pathToFolder}/${capitalizedName}Service.ts`, serviceTemplate);
+}
