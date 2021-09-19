@@ -1,0 +1,32 @@
+import { DataTypes, Model, number, Schema, string, Type } from "../deps.ts";
+
+/**
+ * ${capitalizedName} model represents...
+ * @property name: string | undefined;
+ */
+export class ${capitalizedName} extends Model {
+  static table = "${name}s";
+  static timestamps = true;
+  static fields = {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      length: 250,
+    },
+  };
+  static defaults = {
+    name: "Anonymous",
+  };
+  static schema = {
+    name: string.trim().normalize().between(3, 40).optional(),
+  };
+  static validator = Schema(${capitalizedName}.schema).destruct();
+}
+
+/**
+ * Type of ${capitalizedName}'s schema.
+ */
+export type ${capitalizedName}Schema = Type<typeof ${capitalizedName}.schema>;
