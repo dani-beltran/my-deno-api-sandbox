@@ -15,7 +15,7 @@ switch(componentType) {
     generateController(name, pathToFolder);
     break;
   case 'model':
-    // generateModel(name, pathToFolder);
+    generateModel(name, pathToFolder);
     break;
   case 'service':
     generateService(name, pathToFolder);
@@ -132,4 +132,43 @@ async function generateService(name: string, pathToFolder: string) {
     }
   `;
   await Deno.writeTextFile(`${pathToFolder}/${capitalizedName}Service.ts`, serviceTemplate);
+}
+
+async function generateModel(name: string, pathToFolder: string) {
+  const capitalizedName = upperFirst(name);
+  const modelTemplate = `
+    import { DataTypes, Model, number, Schema, string, Type } from "../deps.ts";
+
+    /**
+     * ${capitalizedName} model represents...
+     *   @property name: string | undefined;
+     */
+    export class ${capitalizedName} extends Model {
+      static table = "${lowerFirst(name)}s";
+      static timestamps = true;
+      static fields = {
+        id: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+        },
+        name: {
+          type: DataTypes.STRING,
+          length: 250,
+        },
+      };
+      static defaults = {
+        name: "Anonymous",
+      };
+      static schema = {
+        name: string.trim().normalize().between(3, 40).optional(),
+      };
+      static validator = Schema(${capitalizedName}.schema).destruct();
+    }
+    
+    /**
+     * Type for ${capitalizedName} resource
+     */
+    export type ${capitalizedName}Schema = Type<typeof ${capitalizedName}.schema>;
+  `;
+  await Deno.writeTextFile(`${pathToFolder}/${capitalizedName}.ts`, modelTemplate);
 }
