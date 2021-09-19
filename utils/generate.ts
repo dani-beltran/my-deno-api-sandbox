@@ -31,7 +31,7 @@ async function generateController(name: string, pathToFolder: string) {
     import { Request, Response } from "../deps.ts";
     import { Controller, CreatedResponse, UpdatedResponse } from "./Controller.ts";
     import { ${capitalizedName}Service } from "../services/${capitalizedName}Service.ts";
-    import { I${capitalizedName}, ${capitalizedName} } from "../models/${capitalizedName}.ts";
+    import { ${capitalizedName}Schema, ${capitalizedName} } from "../models/${capitalizedName}.ts";
     import { ValidatorFactory } from "../utils/ValidatorFactory.ts";
 
     export abstract class ${capitalizedName}Controller {
@@ -46,7 +46,7 @@ async function generateController(name: string, pathToFolder: string) {
         );
       }
 
-      static async get${capitalizedName}(request: Request, response: Response<I${capitalizedName}>) {
+      static async get${capitalizedName}(request: Request, response: Response<${capitalizedName}Schema>) {
         await Controller.handleRequest(
           request,
           response,
@@ -55,7 +55,7 @@ async function generateController(name: string, pathToFolder: string) {
         );
       }
 
-      static async list${capitalizedName}(request: Request, response: Response<I${capitalizedName}[]>) {
+      static async list${capitalizedName}(request: Request, response: Response<${capitalizedName}Schema[]>) {
         await Controller.handleRequest(
           request,
           response,
@@ -102,14 +102,14 @@ async function generateService(name: string, pathToFolder: string) {
     import { Values } from "../deps.ts";
     import { ModelFetcher } from "../utils/ModelFetcher.ts";
     import { ListParams } from "../utils/ValidatorFactory.ts";
-    import { ${capitalizedName}, I${capitalizedName} } from "../models/${capitalizedName}.ts";
+    import { ${capitalizedName}, ${capitalizedName}Schema } from "../models/${capitalizedName}.ts";
     
-    interface IUpdate${capitalizedName} extends I${capitalizedName} {
+    interface update${capitalizedName}Schema extends ${capitalizedName}Schema {
       id: number;
     }
     
     export abstract class ${capitalizedName}Service {
-      static add${capitalizedName}(body: I${capitalizedName}) {
+      static add${capitalizedName}(body: ${capitalizedName}Schema) {
         return ${capitalizedName}.create([body as Values]);
       }
     
@@ -121,8 +121,8 @@ async function generateService(name: string, pathToFolder: string) {
         return ModelFetcher.fetchList(${capitalizedName}, params);
       }
     
-      static update${capitalizedName}({id, ...body}: IUpdate${capitalizedName} ) {
-        const data = body as I${capitalizedName} as Values;
+      static update${capitalizedName}({id, ...body}: update${capitalizedName}Schema ) {
+        const data = body as ${capitalizedName}Schema as Values;
         return ${capitalizedName}.where("id", id).update(data);
       }
     
