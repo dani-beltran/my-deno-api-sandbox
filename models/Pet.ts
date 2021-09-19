@@ -9,7 +9,7 @@ export enum Species {
 /**
  * Interface for Pet resource
  */
-export type IPet = Type<typeof Pet.schema>;
+export type PetSchema = Type<typeof Pet.schema>;
 
 /**
  * Pet model represents the profile of a adoptable pet in the store.

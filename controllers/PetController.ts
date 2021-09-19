@@ -1,7 +1,7 @@
 import { Request, Response } from "../deps.ts";
 import { Controller, CreatedResponse, UpdatedResponse } from "./Controller.ts";
 import { PetService } from "../services/PetService.ts";
-import { IPet, Pet } from "../models/Pet.ts";
+import { PetSchema, Pet } from "../models/Pet.ts";
 import { ValidatorFactory } from "../utils/ValidatorFactory.ts";
 
 export abstract class PetController {
@@ -16,7 +16,7 @@ export abstract class PetController {
     );
   }
 
-  static async getPet(request: Request, response: Response<IPet>) {
+  static async getPet(request: Request, response: Response<PetSchema>) {
     await Controller.handleRequest(
       request,
       response,
@@ -25,7 +25,7 @@ export abstract class PetController {
     );
   }
 
-  static async listPet(request: Request, response: Response<IPet[]>) {
+  static async listPet(request: Request, response: Response<PetSchema[]>) {
     await Controller.handleRequest(
       request,
       response,
