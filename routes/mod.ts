@@ -1,10 +1,10 @@
 import { Opine } from "../deps.ts";
-import { PetRoutes } from "./PetRoutes.ts";
+import { PetRouter } from "./PetRoutes.ts";
 
 export function loadRoutes(app: Opine) {
   loadOtherRoutes(app);
   // Resources routes
-  PetRoutes.load(app);
+  PetRouter.loadRoutes(app);
 }
 
 function loadOtherRoutes(app: Opine) {
