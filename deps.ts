@@ -3,6 +3,7 @@ export {
   Server,
   ServerRequest,
 } from "https://deno.land/std@0.105.0/http/server.ts";
+export { join as pathJoin} from "https://deno.land/std@0.105.0/path/mod.ts";
 export {
   assertArrayIncludes,
   assertEquals,

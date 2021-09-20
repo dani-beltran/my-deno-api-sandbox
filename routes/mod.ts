@@ -1,4 +1,4 @@
-import { Opine } from "../deps.ts";
+import { Opine, pathJoin } from "../deps.ts";
 import { PetRouter } from "./PetRouter.ts";
 
 /**
@@ -12,7 +12,8 @@ export function registerRoutes(app: Opine, basePath = '') {
 }
 
 function registerOtherRoutes(app: Opine, basePath: string) {
-  app.get(`${basePath}/health`, (_req, res) => {
+  const healthPath = pathJoin(basePath, 'health');
+  app.get(healthPath, (_req, res) => {
     res.send("OK");
   });
 }

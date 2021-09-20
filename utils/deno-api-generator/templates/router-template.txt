@@ -1,4 +1,4 @@
-import { Opine, Router } from "../deps.ts";
+import { Opine, pathJoin, Router } from "../deps.ts";
 import { {{capitalizedName}}Controller } from "../controllers/{{capitalizedName}}Controller.ts";
 
 export abstract class {{capitalizedName}}Router {
@@ -16,6 +16,7 @@ export abstract class {{capitalizedName}}Router {
     router.patch("/:id", {{capitalizedName}}Controller.patch{{capitalizedName}});
     router.delete("/:id", {{capitalizedName}}Controller.delete{{capitalizedName}});
 
-    app.use(`${basePath}/{{name}}s`, router);
+    const path = pathJoin(basePath, '{{name}}s');
+    app.use(path, router);
   }
 }
