@@ -1,14 +1,18 @@
 import { Opine } from "../deps.ts";
 import { PetRouter } from "./PetRouter.ts";
 
-export function loadRoutes(app: Opine) {
-  loadOtherRoutes(app);
+/**
+ * Register the routes in the app server.
+ * @param app 
+ */
+export function registerRoutes(app: Opine, basePath = '') {
+  registerOtherRoutes(app, basePath);
   // Resources routes
-  PetRouter.loadRoutes(app);
+  PetRouter.registerRoutes(app, basePath);
 }
 
-function loadOtherRoutes(app: Opine) {
-  app.get("/health", (_req, res) => {
+function registerOtherRoutes(app: Opine, basePath: string) {
+  app.get(`${basePath}/health`, (_req, res) => {
     res.send("OK");
   });
 }

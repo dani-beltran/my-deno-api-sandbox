@@ -2,7 +2,11 @@ import { Opine, Router } from "../deps.ts";
 import { ${capitalizedName}Controller } from "../controllers/${capitalizedName}Controller.ts";
 
 export abstract class ${capitalizedName}Router {
-  static loadRoutes(app: Opine) {
+  /**
+   * Registers the routes for this resource in the app server.
+   * @param app 
+   */
+  static registerRoutes(app: Opine, $basePath: string) {
     const router = new Router();
 
     router.post("/", ${capitalizedName}Controller.add${capitalizedName});
@@ -12,6 +16,6 @@ export abstract class ${capitalizedName}Router {
     router.patch("/:id", ${capitalizedName}Controller.patch${capitalizedName});
     router.delete("/:id", ${capitalizedName}Controller.delete${capitalizedName});
 
-    app.use("/${name}s", router);
+    app.use(`${basePath}/${name}s`, router);
   }
 }

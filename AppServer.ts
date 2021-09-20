@@ -6,8 +6,8 @@ import {
   Server,
   SQLite3Connector,
 } from "./deps.ts";
-import { loadRoutes } from "./routes/mod.ts";
-import { Pet } from "./models/Pet.ts";
+import { registerRoutes } from "./routes/mod.ts";
+import { registerModels } from "./models/mod.ts";
 
 export class AppServer {
   public db: Database;
@@ -37,10 +37,10 @@ export class AppServer {
   }
 
   async run() {
-    this.registedModels();
+    registerModels(this.db);
     await this.db.sync();
     this.opineServer.use(json());
-    loadRoutes(this.opineServer);
+    registerRoutes(this.opineServer, '/api');
     this.httpServer = this.opineServer.listen(this.port, () => {
       console.log(`HTTP Server running on port ${this.port}`);
     });
@@ -59,13 +59,5 @@ export class AppServer {
       filepath: `./database${str}.sqlite`,
     });
     return new Database(connector, { debug: true });
-  }
-
-  private registedModels() {
-    // In case of pivot models created with Relationships.manyToMany,
-    // it is good practice to put them first
-    this.db.link([
-      Pet,
-    ]);
   }
 }

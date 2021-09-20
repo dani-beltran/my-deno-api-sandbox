@@ -2,7 +2,11 @@ import { Opine, Router } from "../deps.ts";
 import { PetController } from "../controllers/PetController.ts";
 
 export abstract class PetRouter {
-  static loadRoutes(app: Opine) {
+  /**
+   * Registers the routes for this resource in the app server.
+   * @param app 
+   */
+  static registerRoutes(app: Opine, basePath: string) {
     const router = new Router();
 
     router.post("/", PetController.addPet);
@@ -12,6 +16,6 @@ export abstract class PetRouter {
     router.patch("/:id", PetController.patchPet);
     router.delete("/:id", PetController.deletePet);
 
-    app.use("/pets", router);
+    app.use(`${basePath}/pets`, router);
   }
 }
