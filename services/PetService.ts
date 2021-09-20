@@ -2,14 +2,16 @@ import { Values } from "../deps.ts";
 import { ModelFetcher } from "../utils/ModelFetcher.ts";
 import { ListParams } from "../utils/ValidatorFactory.ts";
 import { Pet, PetSchema } from "../models/Pet.ts";
+import { CreatedResponse } from "../types/denodb.ts";
 
 interface updatePetSchema extends PetSchema {
   id: number;
 }
 
+
 export abstract class PetService {
   static addPet(body: PetSchema) {
-    return Pet.create([body as Values]);
+    return Pet.create([body as Values]) as any as Promise<CreatedResponse>;
   }
 
   static getPet({ id }: { id: number }) {
