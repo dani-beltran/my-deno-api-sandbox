@@ -18,8 +18,8 @@ async function generate(componentType: string, name: string, pathToFolder: strin
   const capitalizedName = upperFirst(name);
   const templatesDir = getTemplateDir();
   let template = await Deno.readTextFile(`${templatesDir}/${componentType}-template.txt`);
-  template = template.replaceAll('${capitalizedName}', capitalizedName);
-  template = template.replaceAll('${name}', lowerFirst(name));
+  template = template.replaceAll('{{capitalizedName}}', capitalizedName);
+  template = template.replaceAll('{{name}}', lowerFirst(name));
   await Deno.writeTextFile(`${pathToFolder}/${getFilename(name)}.ts`, template);
 }
 

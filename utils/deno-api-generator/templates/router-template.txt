@@ -1,21 +1,21 @@
 import { Opine, Router } from "../deps.ts";
-import { ${capitalizedName}Controller } from "../controllers/${capitalizedName}Controller.ts";
+import { {{capitalizedName}}Controller } from "../controllers/{{capitalizedName}}Controller.ts";
 
-export abstract class ${capitalizedName}Router {
+export abstract class {{capitalizedName}}Router {
   /**
    * Registers the routes for this resource in the app server.
    * @param app 
    */
-  static registerRoutes(app: Opine, $basePath: string) {
+  static registerRoutes(app: Opine, basePath: string) {
     const router = new Router();
 
-    router.post("/", ${capitalizedName}Controller.add${capitalizedName});
-    router.get("/:id", ${capitalizedName}Controller.get${capitalizedName});
-    router.get("/", ${capitalizedName}Controller.list${capitalizedName});
-    router.put("/:id", ${capitalizedName}Controller.put${capitalizedName});
-    router.patch("/:id", ${capitalizedName}Controller.patch${capitalizedName});
-    router.delete("/:id", ${capitalizedName}Controller.delete${capitalizedName});
+    router.post("/", {{capitalizedName}}Controller.add{{capitalizedName}});
+    router.get("/:id", {{capitalizedName}}Controller.get{{capitalizedName}});
+    router.get("/", {{capitalizedName}}Controller.list{{capitalizedName}});
+    router.put("/:id", {{capitalizedName}}Controller.put{{capitalizedName}});
+    router.patch("/:id", {{capitalizedName}}Controller.patch{{capitalizedName}});
+    router.delete("/:id", {{capitalizedName}}Controller.delete{{capitalizedName}});
 
-    app.use(`${basePath}/${name}s`, router);
+    app.use(`${basePath}/{{name}}s`, router);
   }
 }

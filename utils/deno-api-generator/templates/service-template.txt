@@ -1,31 +1,31 @@
 import { Values } from "../deps.ts";
 import { ModelFetcher } from "../utils/ModelFetcher.ts";
 import { ListParams } from "../utils/ValidatorFactory.ts";
-import { ${capitalizedName}, ${capitalizedName}Schema } from "../models/${capitalizedName}.ts";
+import { {{capitalizedName}}, {{capitalizedName}}Schema } from "../models/{{capitalizedName}}.ts";
 
-interface update${capitalizedName}Schema extends ${capitalizedName}Schema {
+interface update{{capitalizedName}}Schema extends {{capitalizedName}}Schema {
   id: number;
 }
 
-export abstract class ${capitalizedName}Service {
-  static add${capitalizedName}(body: ${capitalizedName}Schema) {
-    return ${capitalizedName}.create([body as Values]);
+export abstract class {{capitalizedName}}Service {
+  static add{{capitalizedName}}(body: {{capitalizedName}}Schema) {
+    return {{capitalizedName}}.create([body as Values]);
   }
 
-  static get${capitalizedName}({ id }: { id: number }) {
-    return ModelFetcher.fetchById(${capitalizedName}, id);
+  static get{{capitalizedName}}({ id }: { id: number }) {
+    return ModelFetcher.fetchById({{capitalizedName}}, id);
   }
 
-  static list${capitalizedName}(params: ListParams) {
-    return ModelFetcher.fetchList(${capitalizedName}, params);
+  static list{{capitalizedName}}(params: ListParams) {
+    return ModelFetcher.fetchList({{capitalizedName}}, params);
   }
 
-  static update${capitalizedName}({id, ...body}: update${capitalizedName}Schema ) {
-    const data = body as ${capitalizedName}Schema as Values;
-    return ${capitalizedName}.where("id", id).update(data);
+  static update{{capitalizedName}}({id, ...body}: update{{capitalizedName}}Schema ) {
+    const data = body as {{capitalizedName}}Schema as Values;
+    return {{capitalizedName}}.where("id", id).update(data);
   }
 
-  static delete${capitalizedName}({id}: {id:number}) {
-    return ${capitalizedName}.where('id', id).delete();
+  static delete{{capitalizedName}}({id}: {id:number}) {
+    return {{capitalizedName}}.where('id', id).delete();
   }
 }

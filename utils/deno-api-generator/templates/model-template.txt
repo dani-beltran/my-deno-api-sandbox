@@ -1,11 +1,11 @@
 import { DataTypes, Model, number, Schema, string, Type } from "../deps.ts";
 
 /**
- * ${capitalizedName} model represents...
+ * {{capitalizedName}} model represents...
  * @property name: string | undefined;
  */
-export class ${capitalizedName} extends Model {
-  static table = "${name}s";
+export class {{capitalizedName}} extends Model {
+  static table = "{{name}}s";
   static timestamps = true;
   static fields = {
     id: {
@@ -23,10 +23,10 @@ export class ${capitalizedName} extends Model {
   static schema = {
     name: string.trim().normalize().between(3, 40).optional(),
   };
-  static validator = Schema(${capitalizedName}.schema).destruct();
+  static validator = Schema({{capitalizedName}}.schema).destruct();
 }
 
 /**
- * Type of ${capitalizedName}'s schema.
+ * Type of {{capitalizedName}}'s schema.
  */
-export type ${capitalizedName}Schema = Type<typeof ${capitalizedName}.schema>;
+export type {{capitalizedName}}Schema = Type<typeof {{capitalizedName}}.schema>;
