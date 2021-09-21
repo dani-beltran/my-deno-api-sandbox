@@ -1,4 +1,4 @@
-# my-deno-playground
+# my-deno-api-sandbox
 
 This is just a dummy CRUD API to test out Deno
 
