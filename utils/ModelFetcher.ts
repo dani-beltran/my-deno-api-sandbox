@@ -12,7 +12,10 @@ export class ModelFetcher {
    * @returns 
    */
   static async fetchById(modelClass: typeof Model, id: number) {
-    const model = await modelClass.where("id", id).get() as Model;
+    const model = await modelClass.where("id", id).get();
+    if (Array.isArray(model)) {
+      return model[0];
+    }
     return model;
   }
 
