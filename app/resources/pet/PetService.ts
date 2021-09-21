@@ -1,8 +1,8 @@
-import { Values } from "../deps.ts";
-import { ModelFetcher } from "../utils/ModelFetcher.ts";
-import { ListParams } from "../utils/ValidatorFactory.ts";
-import { Pet, PetSchema } from "../models/Pet.ts";
-import { CreatedResponse } from "../types/denodb.ts";
+import { Values } from "../../deps.ts";
+import { ModelFetcher } from "../../utils/ModelFetcher.ts";
+import { ListParams } from "../../utils/ValidatorFactory.ts";
+import { Pet, PetSchema } from "./Pet.ts";
+import { CreatedResponse } from "../../types/denodb.ts";
 
 interface updatePetSchema extends PetSchema {
   id: number;

@@ -1,4 +1,4 @@
 #!/bin/bash -ex
 
 printf 'PORT=3000\nENV=test' > .env;
-deno test --allow-all --lock=lock.json --unstable --no-check ./tests/**/*
+deno test --allow-all --no-check app/resources/**/*.test.ts

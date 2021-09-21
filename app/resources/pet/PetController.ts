@@ -1,8 +1,8 @@
-import { Request, Response } from "../deps.ts";
-import { Controller, CreatedResponse, UpdatedResponse } from "./Controller.ts";
-import { PetService } from "../services/PetService.ts";
-import { PetSchema, Pet } from "../models/Pet.ts";
-import { ValidatorFactory } from "../utils/ValidatorFactory.ts";
+import { Request, Response } from "../../deps.ts";
+import { Controller, CreatedResponse, UpdatedResponse } from "../../utils/Controller.ts";
+import { PetService } from "./PetService.ts";
+import { PetSchema, Pet } from "./Pet.ts";
+import { ValidatorFactory } from "../../utils/ValidatorFactory.ts";
 
 export abstract class PetController {
   static className = "petController";

@@ -14,17 +14,19 @@
 # -r        Reload all cached dependencies before running server.
 #
 
-entryPoint="./main.ts"
-dependenciesFolder="./deps.ts"
+entryPoint="./app/main.ts"
+dependenciesFolder="./app/deps.ts"
 dev=false
 update=false
 lint=false
 reload=false
 help=false
+check=false
 
-while getopts dulrth flag
+while getopts dulrthc flag
 do
   case "${flag}" in
+      c) check=true;;
       d) dev=true;;
       u) update=true;;
       l) lint=true;;
@@ -46,13 +48,19 @@ if "$help"; then
     exit
 fi
 
+if "$check"; then
+    check_param=""
+else 
+    check_param="--no-check"
+fi
+
 if "$reload"; then
     echo "Reloading cached dependencies..."
-    deno cache --reload --unstable $entryPoint
+    deno cache --reload --unstable --no-check $entryPoint
 fi
 if "$update"; then
     echo "Updating locked dependencies..."
-    deno cache --lock=lock.json --lock-write $dependenciesFolder
+    deno cache --lock=lock.json --lock-write  --no-check --unstable $dependenciesFolder
 fi
 if "$lint"; then
     echo "Running linter..."
@@ -61,9 +69,9 @@ fi
 if "$dev"; then
     echo 'Running app in development mode'
     printf 'PORT=8000\nENV=dev' > .env;
-    deno run --allow-net --allow-read --allow-write --allow-env --watch --unstable --no-check --lock=lock.json  $entryPoint
+    deno run --allow-net --allow-read --allow-write --allow-env --watch --unstable --lock=lock.json $check_param $entryPoint
 else 
     echo 'Running app in production mode'
     printf 'PORT=80\nENV=production' > .env;
-    deno run --allow-net --allow-read --allow-write --allow-env --lock=lock.json --cached-only --unstable $entryPoint
+    deno run --allow-net --allow-read --allow-write --allow-env --lock=lock.json --cached-only --unstable $check_param $entryPoint
 fi

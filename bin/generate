@@ -1,2 +1,2 @@
 #!/bin/bash -e
-bash ./utils/deno-api-generator/generate "$@"
+bash ./app/utils/deno-api-generator/generate "$@"

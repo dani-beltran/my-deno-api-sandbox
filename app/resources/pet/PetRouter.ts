@@ -1,5 +1,5 @@
-import { Opine, pathJoin, Router } from "../deps.ts";
-import { PetController } from "../controllers/PetController.ts";
+import { Opine, pathJoin, Router } from "../../deps.ts";
+import { PetController } from "./PetController.ts";
 
 export abstract class PetRouter {
   /**

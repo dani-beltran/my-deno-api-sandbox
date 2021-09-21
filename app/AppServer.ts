@@ -5,8 +5,7 @@ import {
   Server,
   SQLite3Connector,
 } from "./deps.ts";
-import { registerRoutes } from "./routes/mod.ts";
-import { registerModels } from "./models/mod.ts";
+import { registerModels, registerRoutes } from "./resources/mod.ts";
 
 export class AppServer {
   public db?: Database;
@@ -58,4 +57,5 @@ export class AppServer {
     });
     return new Database(connector, { debug: true });
   }
+
 }

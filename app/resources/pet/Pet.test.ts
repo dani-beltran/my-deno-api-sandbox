@@ -3,10 +3,10 @@ import {
   test,
   config,
 } from "../../deps.ts";
-import { Species } from "../../models/Pet.ts";
-import { PetService } from "../../services/PetService.ts";
+import { Species } from "./Pet.ts";
+import { PetService } from "./PetService.ts";
 import { AppServer } from "../../AppServer.ts";
-import { assertEquals } from "https://deno.land/std@0.105.0/testing/asserts.ts";
+import { assertEquals } from "../../deps.ts";
 
 interface PetSuiteContext {
   appServer: AppServer,
