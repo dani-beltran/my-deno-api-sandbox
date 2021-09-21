@@ -1,7 +1,6 @@
 import {
   Database,
   json,
-  Opine,
   opine,
   Server,
   SQLite3Connector,
@@ -10,11 +9,10 @@ import { registerRoutes } from "./routes/mod.ts";
 import { registerModels } from "./models/mod.ts";
 
 export class AppServer {
-  public db: Database;
+  public db?: Database;
   public port: number;
   public env: string;
   public debug: boolean;
-  private opineServer: Opine;
   private httpServer?: Server;
 
   constructor(opts: {
@@ -26,8 +24,6 @@ export class AppServer {
     this.port = opts.port;
     this.debug = opts.debug ?? false;
     this.validation();
-    this.db = this.connectDB();
-    this.opineServer = opine();
   }
 
   validation() {
@@ -37,18 +33,20 @@ export class AppServer {
   }
 
   async run() {
+    this.db = this.connectDB();
+    const opineServer = opine();
     registerModels(this.db);
     await this.db.sync();
-    this.opineServer.use(json());
-    registerRoutes(this.opineServer, '/api');
-    this.httpServer = this.opineServer.listen(this.port, () => {
-      console.log(`HTTP Server running on port ${this.port}`);
+    opineServer.use(json());
+    registerRoutes(opineServer, '/api');
+    this.httpServer = opineServer.listen(this.port, () => {
+      console.info(`HTTP Server running on port ${this.port}`);
     });
   }
 
   async stop() {
     await Promise.all([
-      this.db.close(),
+      this.db?.close(),
       this.httpServer?.close(),
     ]);
   }
