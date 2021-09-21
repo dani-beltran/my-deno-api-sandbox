@@ -16,7 +16,7 @@ export {
 } from "https://deno.land/x/denodb@v1.0.39/mod.ts";
 export type { Values } from "https://deno.land/x/denodb@v1.0.39/lib/data-types.ts";
 export { Request as HttpRequest } from "https://deno.land/x/request@1.3.0/request.ts";
-export { test, TestSuite } from "https://deno.land/x/test_suite@v0.8.0/mod.ts";
+export { test, TestSuite } from "https://deno.land/x/test_suite@0.9.0/mod.ts";
 
 export { config } from "https://deno.land/x/dotenv@v3.0.0/mod.ts";
 export { json, opine, Router } from "https://deno.land/x/opine@1.7.2/mod.ts";
