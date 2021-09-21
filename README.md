@@ -4,7 +4,7 @@ This is just a dummy CRUD API to test out Deno
 
 ## Dependencies
 
-You need deno 1.13.2 (release, x86_64-apple-darwin) installed in your system.
+You need Deno 1.14.0 (release, x86_64-apple-darwin) installed in your system.
 
 ## How to run the API server
 
@@ -39,8 +39,8 @@ Binary files to execute the app, tests or others.
 
 ### /controllers
 
-HTTP API REST controllers. Classes performing HTTP parametters validation and
-pointing to the corresponding service.
+Controllers receive HTTP requests, validate them and run the corresponding service
+passing the payload pre-processed to it.
 
 ### /logic
 
@@ -48,19 +48,24 @@ Classes containing business logic that can be reused in different services.
 
 ### /models
 
-API REST models. Classes responsible for accesssing and storing the resources data.
+Models encapsulate everything that your application knows. 
+They are responsible for accesssing and storing the resources data.
 
 ### /routes
 
-HTTP API REST routes. Classes describing the URL patterns to perform operations, 
-GET, POST, PUT, PATCH and DELETE on resources.
+Routes describe the URL patterns to perform HTTP operations, GET, POST, PUT, 
+PATCH and DELETE on resources. Each route points to a specific controller.
 
 ### /services
 
-Classes responsible for the interaction with the API resources. The services are
-a way to decouple the logic of the app from how to access this logic. A service
-could be accessed through the controllers for HTTP requests or alternatively 
-through websockets or some other way.
+Services encapsulate everything that your application does. 
+The services are a way to decouple the actions the app can do from how to access this actions. 
+A service could be accessed through the controllers for HTTP requests or alternatively 
+through websockets or from an internal script.
+
+### /tests
+
+Here there are the integration and unit tests for the app.
 
 ### /types
 
