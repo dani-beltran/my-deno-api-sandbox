@@ -37,35 +37,39 @@ bin/test
 
 Binary files to execute the app, tests or others.
 
-### /controllers
+### /app
 
-Controllers receive HTTP requests, validate them and run the corresponding service
+Contains the source code of the app server.
+
+### /app/resources
+
+Resources of the RESTful API. Each resource has its own folder containing:
+
+- **controller**
+
+  Controllers receive HTTP requests, validate them and run the corresponding service
 passing the payload pre-processed to it.
 
-### /logic
+- **model**
 
-Classes containing business logic that can be reused in different services.
-
-### /models
-
-Models encapsulate everything that your application knows. 
+  Models encapsulate everything that your application knows. 
 They are responsible for accesssing and storing the resources data.
 
-### /routes
-
-Routes describe the URL patterns to perform HTTP operations, GET, POST, PUT, 
+- **router**
+    
+  Routes describe the URL patterns to perform HTTP operations, GET, POST, PUT, 
 PATCH and DELETE on resources. Each route points to a specific controller.
 
-### /services
+- **service**
 
-Services encapsulate everything that your application does. 
+  Services encapsulate everything that your application does. 
 The services are a way to decouple the actions the app can do from how to access this actions. 
 A service could be accessed through the controllers for HTTP requests or alternatively 
 through websockets or from an internal script.
 
-### /tests
+- **tests**
 
-Here there are the integration and unit tests for the app.
+  Here there are the integration and unit tests for the app.
 
 ### /types
 
