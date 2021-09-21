@@ -17,10 +17,7 @@ model=false
 router=false
 service=false
 help=false
-controllersPath="./controllers";
-modelsPath="./models";
-servicesPath="./services";
-routersPath="./routes";
+resourcePath="./app/resources/$2";
 
 while getopts cmrsh flag
 do
@@ -47,18 +44,20 @@ if "$help" || [ -z "$2" ] || [ $controller == "false" ] && [ $service == "false"
     exit
 fi
 
+mkdir $resourcePath
+
 if "$controller" && [ ! -z "$2" ]; then
-    deno run --allow-read --allow-write --no-check $entryPoint controller $2 $controllersPath
+    deno run --allow-read --allow-write --no-check $entryPoint controller $2 $resourcePath
 fi
 
 if "$model" && [ ! -z "$2" ]; then
-    deno run --allow-read  --allow-write --no-check $entryPoint model $2 $modelsPath
+    deno run --allow-read  --allow-write --no-check $entryPoint model $2 $resourcePath
 fi
 
 if "$router" && [ ! -z "$2" ]; then
-    deno run --allow-read  --allow-write --no-check $entryPoint router $2 $routersPath
+    deno run --allow-read  --allow-write --no-check $entryPoint router $2 $resourcePath
 fi
 
 if "$service" && [ ! -z "$2" ]; then
-    deno run --allow-read  --allow-write --no-check $entryPoint service $2 $servicesPath
+    deno run --allow-read  --allow-write --no-check $entryPoint service $2 $resourcePath
 fi
