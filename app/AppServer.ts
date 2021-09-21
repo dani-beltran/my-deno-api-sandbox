@@ -2,10 +2,13 @@ import {
   Database,
   json,
   opine,
+  Opine,
+  pathJoin,
   Server,
   SQLite3Connector,
 } from "./deps.ts";
-import { registerModels, registerRoutes } from "./resources/mod.ts";
+import { Pet } from "./resources/pet/Pet.ts";
+import { PetRouter } from "./resources/pet/PetRouter.ts";
 
 export class AppServer {
   public db?: Database;
@@ -34,10 +37,10 @@ export class AppServer {
   async run() {
     this.db = this.connectDB();
     const opineServer = opine();
-    registerModels(this.db);
+    this.registerModels(this.db);
     await this.db.sync();
     opineServer.use(json());
-    registerRoutes(opineServer, '/api');
+    this.registerRoutes(opineServer, '/api');
     this.httpServer = opineServer.listen(this.port, () => {
       console.info(`HTTP Server running on port ${this.port}`);
     });
@@ -57,5 +60,34 @@ export class AppServer {
     });
     return new Database(connector, { debug: true });
   }
+
+  /**
+ * Register the models in the app server's DB.
+ * @param db 
+ */
+ private registerModels(db: Database) {
+  // In case of pivot models created with Relationships.manyToMany,
+  // it is good practice to put them first
+  db.link([
+    Pet,
+  ]);
+}
+
+/**
+ * Register the routes in the app server.
+ * @param app 
+ */
+ private registerRoutes(app: Opine, basePath = '') {
+  this.registerOtherRoutes(app, basePath);
+  // Resources routes
+  PetRouter.registerRoutes(app, basePath);
+}
+
+private registerOtherRoutes(app: Opine, basePath: string) {
+  const healthPath = pathJoin(basePath, 'health');
+  app.get(healthPath, (_req, res) => {
+    res.send("OK");
+  });
+}
 
 }
