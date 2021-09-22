@@ -1,8 +1,8 @@
 import {
   Database,
   json,
-  opine,
   Opine,
+  opine,
   pathJoin,
   Server,
   SQLite3Connector,
@@ -10,6 +10,10 @@ import {
 import { Pet } from "./resources/pet/Pet.ts";
 import { PetRouter } from "./resources/pet/PetRouter.ts";
 
+/**
+ * The application server that runs the RESTful API.
+ * Register here the routes and the models of the resources.
+ */
 export class AppServer {
   public db?: Database;
   public port: number;
@@ -25,27 +29,26 @@ export class AppServer {
     this.env = opts.env ?? "production";
     this.port = opts.port;
     this.debug = opts.debug ?? false;
-    this.validation();
   }
 
-  validation() {
-    if (Number.isInteger(this.port) == false) {
-      throw new Error(`Server port is not valid. Value: ${this.port}`);
-    }
-  }
-
+  /**
+   * Runs the server
+   */
   async run() {
     this.db = this.connectDB();
     const opineServer = opine();
     this.registerModels(this.db);
     await this.db.sync();
     opineServer.use(json());
-    this.registerRoutes(opineServer, '/api');
+    this.registerRoutes(opineServer, "/api");
     this.httpServer = opineServer.listen(this.port, () => {
       console.info(`HTTP Server running on port ${this.port}`);
     });
   }
 
+  /**
+   * Stops the server.
+   */
   async stop() {
     await Promise.all([
       this.db?.close(),
@@ -53,6 +56,10 @@ export class AppServer {
     ]);
   }
 
+  /**
+   * Connects to the database and returns the connection.
+   * @returns
+   */
   private connectDB() {
     const str = (this.env !== "production") ? "." + this.env : "";
     const connector = new SQLite3Connector({
@@ -62,32 +69,36 @@ export class AppServer {
   }
 
   /**
- * Register the models in the app server's DB.
- * @param db 
- */
- private registerModels(db: Database) {
-  // In case of pivot models created with Relationships.manyToMany,
-  // it is good practice to put them first
-  db.link([
-    Pet,
-  ]);
-}
+   * Register the models in the app server's DB.
+   * @param db
+   */
+  private registerModels(db: Database) {
+    // In case of pivot models created with Relationships.manyToMany,
+    // it is good practice to put them first
+    db.link([
+      Pet,
+    ]);
+  }
 
-/**
- * Register the routes in the app server.
- * @param app 
- */
- private registerRoutes(app: Opine, basePath = '') {
-  this.registerOtherRoutes(app, basePath);
-  // Resources routes
-  PetRouter.registerRoutes(app, basePath);
-}
+  /**
+   * Register the routes in the app server.
+   * @param app
+   */
+  private registerRoutes(app: Opine, basePath = "") {
+    this.registerOtherRoutes(app, basePath);
+    // Resources routes
+    PetRouter.registerRoutes(app, basePath);
+  }
 
-private registerOtherRoutes(app: Opine, basePath: string) {
-  const healthPath = pathJoin(basePath, 'health');
-  app.get(healthPath, (_req, res) => {
-    res.send("OK");
-  });
-}
-
+  /**
+   * Register routes not corresponding to any resource.
+   * @param app
+   * @param basePath
+   */
+  private registerOtherRoutes(app: Opine, basePath: string) {
+    const healthPath = pathJoin(basePath, "health");
+    app.get(healthPath, (_req, res) => {
+      res.send("OK");
+    });
+  }
 }
