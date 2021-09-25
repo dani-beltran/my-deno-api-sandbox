@@ -1,5 +1,5 @@
 import { Request, Response } from "../../deps.ts";
-import { Controller } from "../../utils/controller-class.ts";
+import { Controller } from "../../utils/controller.ts";
 import  * as petServices from "./pet.services.ts";
 import { PetSchema, Pet } from "./pet.model.ts";
 import { ValidatorFactory } from "../../utils/ValidatorFactory.ts";
