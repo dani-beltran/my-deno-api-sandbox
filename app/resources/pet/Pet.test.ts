@@ -3,8 +3,8 @@ import {
   test,
   config,
 } from "../../deps.ts";
-import { Species } from "./Pet.ts";
-import { PetService } from "./PetService.ts";
+import { Species } from "./pet.model.ts";
+import * as PetServices from "./pet.services.ts";
 import { AppServer } from "../../AppServer.ts";
 import { assertEquals } from "../../deps.ts";
 
@@ -28,7 +28,7 @@ const postPetSuite: TestSuite<PetSuiteContext> = new TestSuite({
   afterAll(context: PetSuiteContext) {
     // Remove all inserted pets
     context.petsIds.forEach(element => {
-      PetService.deletePet({id: element});
+      PetServices.deletePet({id: element});
     });
     return context.appServer.stop();
   },
@@ -60,7 +60,7 @@ test(postPetSuite, "should return 200 status code and affect only one row", asyn
 
 test(postPetSuite, "should had created the pet", async (context: PetSuiteContext) => {
   const petId = context.petsIds[context.petsIds.length - 1];
-  const pet = await PetService.getPet({id: petId});
+  const pet = await PetServices.getPet({id: petId});
   assertEquals(pet.id, petId);
   assertEquals(pet.name, 'test-dog');
   assertEquals(pet.age,  15);

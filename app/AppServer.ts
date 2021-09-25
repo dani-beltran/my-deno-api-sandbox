@@ -7,8 +7,8 @@ import {
   Server,
   SQLite3Connector,
 } from "./deps.ts";
-import { Pet } from "./resources/pet/Pet.ts";
-import { PetRouter } from "./resources/pet/PetRouter.ts";
+import { Pet } from "./resources/pet/pet.model.ts";
+import { PetRouter } from "./resources/pet/pet.router.ts";
 
 /**
  * The application server that runs the RESTful API.

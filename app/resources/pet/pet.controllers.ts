@@ -1,0 +1,59 @@
+import { Request, Response } from "../../deps.ts";
+import { Controller, CreatedResponse, UpdatedResponse } from "../../utils/Controller.ts";
+import  * as petServices from "./pet.services.ts";
+import { PetSchema, Pet } from "./pet.model.ts";
+import { ValidatorFactory } from "../../utils/ValidatorFactory.ts";
+
+export async function addPetCtrl(request: Request, response: Response<CreatedResponse>) {
+  await Controller.handleRequest(
+    request,
+    response,
+    petServices.addPet,
+    Pet.validator,
+  );
+}
+
+export async function getPetCtrl(request: Request, response: Response<PetSchema>) {
+  await Controller.handleRequest(
+    request,
+    response,
+    petServices.getPet,
+    ValidatorFactory.buildGetValidator(),
+  );
+}
+
+export async function listPetCtrl(request: Request, response: Response<PetSchema[]>) {
+  await Controller.handleRequest(
+    request,
+    response,
+    petServices.listPet,
+    ValidatorFactory.buildListValidator(),
+  );
+}
+
+export async function putPetCtrl(request: Request, response: Response<UpdatedResponse>) {
+  await Controller.handleRequest(
+    request,
+    response,
+    petServices.updatePet,
+    ValidatorFactory.buildUpdateValidator(Pet),
+  );
+}
+
+export async function patchPetCtrl(request: Request, response: Response<UpdatedResponse>) {
+  await Controller.handleRequest(
+    request,
+    response,
+    petServices.updatePet,
+    ValidatorFactory.buildPatchValidator(Pet),
+  );
+}
+
+export async function deletePetCtrl(request: Request, response: Response<UpdatedResponse>) {
+  await Controller.handleRequest(
+    request,
+    response,
+    petServices.deletePet,
+    ValidatorFactory.buildDeleteValidator(),
+  );
+}
