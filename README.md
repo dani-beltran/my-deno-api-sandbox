@@ -16,7 +16,7 @@ bin/run
 
 ```
 OPTIONS
- -d        Run it in development mode. It runs a watcher and doesnt check 
+ -d        Run it in development mode. It runs a watcher and doesn't check 
            typings for faster reloading.
  -u        Update locked dependencies before running the server.
  -l        Run linter before running the server.
@@ -53,7 +53,7 @@ passing the payload pre-processed to it.
 - **model**
 
   Models encapsulate everything that your application knows. 
-They are responsible for accesssing and storing the resources data.
+They are responsible for accessing and storing the resources data.
 
 - **router**
     
@@ -71,10 +71,6 @@ through websockets or from an internal script.
 
   Here there are the integration and unit tests for the app.
 
-### /types
-
-Typescript type definitions.
-
 ### /utils
 
 Files containing code that can be helpful for the app, but also can be ported 
@@ -90,9 +86,9 @@ import-map.json
 ### Why using abstract classes for controllers, services and routes ?
 
 To make sure they are not instantiated. This is because my intention is to make
-these classes stateless and inmmutable, and so, predictable. They will always 
+these classes stateless and immutable, and so, predictable. They will always 
 behave the same for every request. They behave more like a collection of functions 
-that are wrapped in classes just for naming convinience. 
+that are wrapped in classes just for naming convenience. 
 
 ### I generated a controller, service, router and model for a resource, but it doesn't work
 
