@@ -1,5 +1,5 @@
 import { config, signal } from "./deps.ts";
-import { AppServer } from "./AppServer.ts";
+import { AppServer } from "./app-server.ts";
 
 console.info("Loading environment variables...");
 const { PORT, ENV } = config({ safe: true });
