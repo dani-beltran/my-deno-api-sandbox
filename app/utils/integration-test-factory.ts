@@ -15,7 +15,7 @@ export class IntegrationTestFactory {
     this.method = params.method;
   }
 
-  buildValidationTest(params?: {
+  buildBodyValidationTest(params?: {
     responseType?: ResponseType
   }) {
     return async (input: Dictionary<string|number|boolean>, expected: string) => {
@@ -25,6 +25,27 @@ export class IntegrationTestFactory {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(input),
+      });
+      assertEquals(res.status, 400);
+      if (params?.responseType === ResponseType.json) {
+        assertEquals(await res.json(), expected);
+      } else {
+        assertEquals(await res.text(), expected);  
+      }
+    };
+  }
+
+  buildSearchValidation(params?: {
+    responseType?: ResponseType
+  }) {
+    return async (input: [string, string][], expected: string) => {
+      let url = `${this.endpointUrl}?`;
+      input.forEach(pair => {
+        url += `${pair[0]}=${pair[1]}&`;
+      });
+      url = url.substr(0, url.length - 1);
+      const res = await fetch(url, {
+        method: this.method,
       });
       assertEquals(res.status, 400);
       if (params?.responseType === ResponseType.json) {
