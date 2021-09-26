@@ -1,14 +1,14 @@
 export {
   serve,
   Server
-} from "https://deno.land/std@0.105.0/http/server.ts";
-export { join as pathJoin} from "https://deno.land/std@0.107.0/path/mod.ts";
-export { signal } from "https://deno.land/std@0.107.0/signal/mod.ts";
+} from "https://deno.land/std@0.107.0/http/server_legacy.ts";
+export { join as pathJoin} from "https://deno.land/std@0.108.0/path/mod.ts";
+export { signal } from "https://deno.land/std@0.108.0/signal/mod.ts";
 
 export {
   assertArrayIncludes,
   assertEquals,
-} from "https://deno.land/std@0.107.0/testing/asserts.ts";
+} from "https://deno.land/std@0.108.0/testing/asserts.ts";
 export {
   Database,
   DataTypes,
@@ -20,14 +20,14 @@ export { Request as HttpRequest } from "https://deno.land/x/request@1.3.0/reques
 export { test, TestSuite } from "https://deno.land/x/test_suite@0.9.0/mod.ts";
 
 export { config } from "https://deno.land/x/dotenv@v3.0.0/mod.ts";
-export { json, opine, Router } from "https://deno.land/x/opine@1.7.2/mod.ts";
+export { json, opine, Router } from "https://deno.land/x/opine@1.8.0/mod.ts";
 export type {
   Dictionary,
   Opine,
   Params,
   Request,
   Response,
-} from "https://deno.land/x/opine@1.7.2/mod.ts";
+} from "https://deno.land/x/opine@1.8.0/mod.ts";
 import Schema from "https://denoporter.sirjosh.workers.dev/v1/deno.land/x/computed_types@v1.10.2/src/index.ts";
 export { Schema };
 export {
