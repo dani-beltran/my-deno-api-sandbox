@@ -20,15 +20,18 @@ export class AppServer {
   public env: string;
   public debug: boolean;
   private httpServer?: Server;
+  private flushDB: boolean;
 
   constructor(opts: {
     port: number;
     env?: string;
     debug?: boolean;
+    flushDB?: boolean;
   }) {
     this.env = opts.env ?? "production";
     this.port = opts.port;
     this.debug = opts.debug ?? false;
+    this.flushDB = opts.flushDB ?? false;
   }
 
   /**
@@ -38,7 +41,7 @@ export class AppServer {
     this.db = this.connectDB();
     const opineServer = opine();
     this.registerModels(this.db);
-    await this.db.sync({drop: false});
+    await this.db.sync({drop: this.flushDB});
     this.registerMiddleware(opineServer);
     this.registerRoutes(opineServer, "/api");
     this.httpServer = opineServer.listen(this.port, () => {
