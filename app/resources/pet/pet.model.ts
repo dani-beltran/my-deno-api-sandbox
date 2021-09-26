@@ -49,7 +49,7 @@ export class Pet extends Model {
     name: string.trim().normalize().between(3, 40).optional(),
     species: Schema.enum(Species, "Invalid species"),
     age: number.integer().gt(0),
-    insurancePolicy: string.regexp(/^[a-z0-9]{10,64}$/).trim().optional(),
+    insurancePolicy: string.trim().regexp(/^[a-z0-9]{10,64}$/).optional(),
     description: string.trim().optional(),
   };
   static validator = Schema(Pet.schema, {strict: true}).destruct();
