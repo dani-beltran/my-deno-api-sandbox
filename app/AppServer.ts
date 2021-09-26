@@ -38,8 +38,8 @@ export class AppServer {
     this.db = this.connectDB();
     const opineServer = opine();
     this.registerModels(this.db);
-    await this.db.sync({drop: true});
-    opineServer.use(json());
+    await this.db.sync({drop: false});
+    this.registerMiddleware(opineServer);
     this.registerRoutes(opineServer, "/api");
     this.httpServer = opineServer.listen(this.port, () => {
       console.info(`HTTP Server running on port ${this.port}`);
@@ -66,6 +66,14 @@ export class AppServer {
       filepath: `./database${str}.sqlite`,
     });
     return new Database(connector, { debug: true });
+  }
+
+  /**
+   * Register middleware functions to run for all the routes.
+   * @param app 
+   */
+  private registerMiddleware(app: Opine) {
+    app.use(json());
   }
 
   /**
