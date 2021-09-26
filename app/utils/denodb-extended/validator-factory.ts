@@ -17,8 +17,8 @@ export class ValidatorFactory {
    * @returns a validator for GET resource 
    */
   static buildGetValidator() {
-    const getSchema = Schema(ValidatorFactory.getSchema);
-    return getSchema.destruct();
+    const schema = Schema(ValidatorFactory.getSchema, {strict: true});
+    return schema.destruct();
   }
 
   /**
@@ -26,7 +26,8 @@ export class ValidatorFactory {
    * @returns a validator for LIST resource
    */
   static buildListValidator() {
-    return Schema(listSchema).destruct();
+    const schema = Schema(listSchema, {strict: false});
+    return schema.destruct();
   }
 
   /**
@@ -39,7 +40,7 @@ export class ValidatorFactory {
       ValidatorFactory.getSchema,
       Model.schema,
     );
-    return schema.destruct();
+    return Schema(schema, {strict: true}).destruct();
   }
 
   /**
@@ -47,8 +48,8 @@ export class ValidatorFactory {
    * @returns a validator for DELETE resource
    */
   static buildDeleteValidator() {
-    const getSchema = Schema(ValidatorFactory.getSchema);
-    return getSchema.destruct();
+    const schema = Schema(ValidatorFactory.getSchema, {strict: true});
+    return schema.destruct();
   }
 
   /**
@@ -57,12 +58,12 @@ export class ValidatorFactory {
    * @returns a validator for PATCH resource
    */
   static buildPatchValidator(Model: IModel) {
-    const newSchema = ValidatorFactory.convertAllSchemaItemsToOptional(
+    const optSchema = ValidatorFactory.convertAllSchemaItemsToOptional(
       Model.schema,
     );
     const schema = Schema.merge(
       { id: unknown.number().integer().gt(0) },
-      newSchema,
+      optSchema,
     );
     return schema.destruct();
   }

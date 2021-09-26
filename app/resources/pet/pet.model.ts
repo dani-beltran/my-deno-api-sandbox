@@ -10,7 +10,7 @@ export enum Species {
  * @property name: string | undefined;
  * @property species: Species;
  * @property age: number;
- * @property inssurancePolicy: string | undefined;
+ * @property insurancePolicy: string | undefined;
  * @property description: string | undefined;
  */
 export class Pet extends Model {
@@ -32,7 +32,7 @@ export class Pet extends Model {
     age: {
       type: DataTypes.INTEGER,
     },
-    inssurancePolicy: {
+    insurancePolicy: {
       type: DataTypes.STRING,
       length: 250,
       allowNull: true,
@@ -49,10 +49,10 @@ export class Pet extends Model {
     name: string.trim().normalize().between(3, 40).optional(),
     species: Schema.enum(Species, "Invalid species"),
     age: number.integer().gt(0),
-    inssurancePolicy: string.regexp(/^[a-z0-9]{10,64}$/).trim().optional(),
+    insurancePolicy: string.regexp(/^[a-z0-9]{10,64}$/).trim().optional(),
     description: string.trim().optional(),
   };
-  static validator = Schema(Pet.schema).destruct();
+  static validator = Schema(Pet.schema, {strict: true}).destruct();
 
 }
 

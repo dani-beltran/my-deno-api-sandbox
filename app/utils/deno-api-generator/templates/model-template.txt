@@ -23,7 +23,7 @@ export class {{capitalizedName}} extends Model {
   static schema = {
     name: string.trim().normalize().between(3, 40).optional(),
   };
-  static validator = Schema({{capitalizedName}}.schema).destruct();
+  static validator = Schema({{capitalizedName}}.schema, {strict: true}).destruct();
 }
 
 /**
