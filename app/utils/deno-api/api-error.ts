@@ -12,7 +12,7 @@ export class ApiError {
   private identifyError() {
     if (this.isNotFoundError()) {
       this.statusCode = 404;
-      this.message = 'Not found';
+      this.message = this.rawError?.message || 'Not found';
     }
     if (this.isNotValidError()) {
       this.statusCode = 400;
@@ -21,11 +21,15 @@ export class ApiError {
   }
 
   isNotFoundError() {
-    return this.rawError === 'notFound' || this.rawError?.statusCode === 404;
+    return this.rawError === 'notFound' 
+    || this.rawError?.code === 'notFound'
+    || this.rawError?.statusCode === 404;
   }
 
   isNotValidError() {
-    return this.rawError?.statusCode === 400;
+    return this.rawError === 'notFound' 
+    || this.rawError?.code === 'notValid'
+    || this.rawError?.statusCode === 400;
   }
 
 }
