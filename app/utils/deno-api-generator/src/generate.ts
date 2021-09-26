@@ -34,7 +34,11 @@ function isValidComponentType(value: string) {
 }
 
 function getFilename(resourceName: string) {
-  return `${upperFirst(resourceName)}${componentType !== 'model' ? upperFirst(componentType) : ''}`;
+  let name = `${resourceName.toLowerCase()}.${componentType}`;
+  if (componentType === 'controller' || componentType === 'service') {
+    name += 's';
+  }
+  return name;
 }
 
 function getTemplateDir() {

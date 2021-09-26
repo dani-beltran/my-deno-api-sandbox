@@ -38,7 +38,7 @@ export class AppServer {
     this.db = this.connectDB();
     const opineServer = opine();
     this.registerModels(this.db);
-    await this.db.sync();
+    await this.db.sync({drop: true});
     opineServer.use(json());
     this.registerRoutes(opineServer, "/api");
     this.httpServer = opineServer.listen(this.port, () => {
