@@ -14,8 +14,8 @@ export class Controller {
   static async handleRequest(
     req: Request,
     res: Response,
-    serviceOperation: any,
-    validator?: any,
+    serviceOperation: (params: any) => any,
+    validator?: (params: any) => any,
   ) {
     try {
       let params = { ...(req.body || req.query), ...req.params };
