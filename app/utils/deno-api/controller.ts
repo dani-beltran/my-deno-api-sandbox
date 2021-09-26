@@ -41,7 +41,6 @@ export class Controller {
       const serviceResponse = await serviceOperation(params);
       Controller.sendResponse(res, serviceResponse);
     } catch (error) {
-      console.error(error);
       const apiError = new ApiError(error);
       Controller.sendError(res, apiError);
     }
