@@ -14,10 +14,18 @@ export class ApiError {
       this.statusCode = 404;
       this.message = 'Not found';
     }
+    if (this.isNotValidError()) {
+      this.statusCode = 400;
+      this.message = this.rawError?.message || 'Bad request';
+    }
   }
 
   isNotFoundError() {
-    return this.rawError === 'notFound';
+    return this.rawError === 'notFound' || this.rawError?.statusCode === 404;
+  }
+
+  isNotValidError() {
+    return this.rawError?.statusCode === 400;
   }
 
 }
