@@ -4,9 +4,10 @@
 // It's extended with features from libs like "computed-types" 
 //
 import { Model, Values } from "./deps.ts";
-import { ListParams, CreatedResponse, UpdatedResponse } from "./types.ts";
+import { ListParams, CreatedResponse, UpdatedResponse, IModel } from "./types.ts";
 enum errors {
-  notFound = 'notFound'
+  notFound = 'notFound',
+  notValid = 'notValid',
 }
 
 /**
@@ -28,7 +29,7 @@ enum errors {
 export async function deleteById(modelClass: typeof Model, id: number) {
   const res = await modelClass.where('id', id).delete() as any as UpdatedResponse;
   if (res.affectedRows === 0) {
-    throw errors.notFound;
+    throw { code: errors.notFound };
   }
   return res;
 }
@@ -44,7 +45,7 @@ export async function fetchById(modelClass: typeof Model, id: number) {
     model = model[0];
   }
   if (!model) {
-    throw errors.notFound;
+    throw { code: errors.notFound };
   }
   return model;
 }
@@ -54,11 +55,15 @@ export async function fetchById(modelClass: typeof Model, id: number) {
  * @param params Parameters for pagination
  * @returns an array of instances of the model fetched from the DB.
  */
-export function fetchList(modelClass: typeof Model, params: ListParams) {
+export function fetchList(modelClass: IModel, params: ListParams) {
   const query = modelClass.offset((params.page - 1) * params.pageSize);
   query.limit(params.pageSize);
   if (params.sortBy) {
-    query.orderBy(params.sortBy, params.order);
+    if (hasField(modelClass, params.sortBy)) {
+      query.orderBy(params.sortBy, params.order);
+    } else {
+      throw { code: errors.notValid, message: `sortBy=${params.sortBy} is not a field of ${modelClass.name}` };
+    }
   }
   return query.all();
 }
@@ -76,4 +81,13 @@ export async function updateById(modelClass: typeof Model, id: number, values: V
     throw errors.notFound;
   }
   return res;
+}
+
+/**
+ * @param modelClass 
+ * @param field 
+ * @returns true if the model has the field in its schema.
+ */
+export function hasField(modelClass: IModel, field: string) {
+  return Object.keys(modelClass.schema).find((value) => value === field) !== undefined;
 }
