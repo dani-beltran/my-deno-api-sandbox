@@ -1,6 +1,6 @@
 import { Values } from "../../deps.ts";
-import { fetchById, fetchList, create, updateById, deleteById } from "../../utils/denodb-extended.ts";
-import { ListParams } from "../../utils/ValidatorFactory.ts";
+import { fetchById, fetchList, create, updateById, deleteById } from "../../utils/denodb-extended/mod.ts";
+import { ListParams } from "../../utils/denodb-extended/types.ts";
 import { Pet, PetSchema } from "./pet.model.ts";
 
 interface updatePetSchema extends PetSchema {

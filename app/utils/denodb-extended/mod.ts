@@ -1,28 +1,10 @@
-//
-// This file contains functions and types for extending and wrapping denodb lib.
-//
 // deno-lint-ignore-file no-explicit-any
-import { Model, Values } from "../deps.ts";
-import { ListParams } from "./ValidatorFactory.ts";
-
-/**
- * Extended Model class type.
- * Based on DenoDB models, but with extended properties from other libs like:
- * - "computed-types"
- */
- export type IModel = {
-  schema: { [key: string]: any }
-} & typeof Model;
-
-/**
- * The actual response from Model.create() in denodb v1.0.39 using sqlite.
- */
-export type CreatedResponse = { affectedRows: number, lastInsertId: number };
-
-/**
- * The actual response from Model.update() and Model.delete() in denodb v1.0.39 using sqlite.
- */
-export type UpdatedResponse = { affectedRows: number };
+//
+// This file contains methods for extending and wrapping denodb lib.
+// It's extended with features from libs like "computed-types" 
+//
+import { Model, Values } from "./deps.ts";
+import { ListParams, CreatedResponse, UpdatedResponse } from "./types.ts";
 
 /**
  * Creates the model in the DB with the given values. 

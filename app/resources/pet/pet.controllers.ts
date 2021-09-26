@@ -2,8 +2,8 @@ import { Request, Response } from "../../deps.ts";
 import { Controller } from "../../utils/controller.ts";
 import  * as petServices from "./pet.services.ts";
 import { PetSchema, Pet } from "./pet.model.ts";
-import { ValidatorFactory } from "../../utils/ValidatorFactory.ts";
-import { CreatedResponse, UpdatedResponse } from "../../utils/denodb-extended.ts";
+import { ValidatorFactory } from "../../utils/denodb-extended/validator-factory.ts";
+import { CreatedResponse, UpdatedResponse } from "../../utils/denodb-extended/types.ts";
 
 export async function addPetCtrl(request: Request, response: Response<CreatedResponse>) {
   await Controller.handleRequest(
