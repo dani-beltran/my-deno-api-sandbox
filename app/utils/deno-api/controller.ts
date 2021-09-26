@@ -42,6 +42,9 @@ export class Controller {
       Controller.sendResponse(res, serviceResponse);
     } catch (error) {
       const apiError = new ApiError(error);
+      if (apiError.statusCode === 500) {
+        console.error(apiError);
+      }
       Controller.sendError(res, apiError);
     }
   }
