@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
-import { Request, Response } from "../deps.ts";
-import { entriesToDictionaryReducer } from "../utils/generics.ts";
+import { Request, Response } from "./deps.ts";
+import { entriesToDictionaryReducer } from "../../utils/generics.ts";
+import { ApiError } from "./api-error.ts";
 
 /**
  * This class offer the basic functionality of any controller.
@@ -25,7 +26,8 @@ export class Controller {
       Controller.sendResponse(res, serviceResponse);
     } catch (error) {
       console.error(error);
-      Controller.sendError(res, error);
+      const apiError = new ApiError(error);
+      Controller.sendError(res, apiError);
     }
   }
 

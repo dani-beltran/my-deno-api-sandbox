@@ -5,6 +5,9 @@
 //
 import { Model, Values } from "./deps.ts";
 import { ListParams, CreatedResponse, UpdatedResponse } from "./types.ts";
+enum errors {
+  notFound = 'notFound'
+}
 
 /**
  * Creates the model in the DB with the given values. 
@@ -22,8 +25,12 @@ import { ListParams, CreatedResponse, UpdatedResponse } from "./types.ts";
  * @param id 
  * @returns 
  */
-export function deleteById(modelClass: typeof Model, id: number) {
-  return modelClass.where('id', id).delete() as any as Promise<UpdatedResponse>;
+export async function deleteById(modelClass: typeof Model, id: number) {
+  const res = await modelClass.where('id', id).delete() as any as UpdatedResponse;
+  if (res.affectedRows === 0) {
+    throw errors.notFound;
+  }
+  return res;
 }
 
 /**
@@ -32,9 +39,12 @@ export function deleteById(modelClass: typeof Model, id: number) {
  * @returns an instance of the model fetched from the DB by Id.
  */
 export async function fetchById(modelClass: typeof Model, id: number) {
-  const model = await modelClass.where("id", id).get();
+  let model = await modelClass.where("id", id).get();
   if (Array.isArray(model)) {
-    return model[0];
+    model = model[0];
+  }
+  if (!model) {
+    throw errors.notFound;
   }
   return model;
 }
@@ -60,6 +70,10 @@ export function fetchList(modelClass: typeof Model, params: ListParams) {
  * @param values 
  * @returns 
  */
-export function updateById(modelClass: typeof Model, id: number, values: Values) {
-  return modelClass.where("id", id).update(values) as any as Promise<UpdatedResponse>;
+export async function updateById(modelClass: typeof Model, id: number, values: Values) {
+  const res = await modelClass.where("id", id).update(values) as any as UpdatedResponse;
+  if (res.affectedRows === 0) {
+    throw errors.notFound;
+  }
+  return res;
 }

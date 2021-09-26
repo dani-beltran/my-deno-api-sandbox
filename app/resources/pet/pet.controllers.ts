@@ -1,5 +1,5 @@
 import { Request, Response } from "../../deps.ts";
-import { Controller } from "../../utils/controller.ts";
+import { Controller } from "../../utils/deno-api/controller.ts";
 import  * as petServices from "./pet.services.ts";
 import { PetSchema, Pet } from "./pet.model.ts";
 import { ValidatorFactory } from "../../utils/denodb-extended/validator-factory.ts";
