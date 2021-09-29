@@ -11,8 +11,9 @@ import { IntegrationTestFactory } from "../../utils/integration-test-factory.ts"
 
 interface PetSuiteContext {
   appServer: AppServer,
-  endpointUrl: string,
   method: string,
+  endpointUrl: string,
+  headers: HeadersInit,
   petsIds: number[],
   testFactory: IntegrationTestFactory,
 }
@@ -20,7 +21,7 @@ interface PetSuiteContext {
 const { PORT, ENV } = config({safe: true});
 const API_URL = `http://localhost:${PORT}/api`;
 
-// POST Pet
+// CREATE Pet
 //////////////////////////////////////////////////////////////////////////////
 const postPetSuite: TestSuite<PetSuiteContext> = new TestSuite({
   name: "[Post Pet]",
@@ -29,10 +30,14 @@ const postPetSuite: TestSuite<PetSuiteContext> = new TestSuite({
   beforeAll(context: PetSuiteContext) {
     console.info = () => {};
     context.petsIds = [];
-    context.endpointUrl = `${API_URL}/pets`;
     context.method = 'POST';
+    context.endpointUrl = `${API_URL}/pets`;
+    context.headers = {
+      'Content-Type': 'application/json',
+    };
     context.testFactory = new IntegrationTestFactory({
       endpointUrl: context.endpointUrl, 
+      headers: context.headers,
       method: context.method
     });
     context.appServer = new AppServer({port: Number(PORT), env: ENV, flushDB: true});
@@ -86,9 +91,7 @@ test(postPetSuite, "should return 400 status code if insurancePolicy not complie
 test(postPetSuite, "should return 200 status code and affect only one row", async (context: PetSuiteContext) => {
   const res = await fetch(context.endpointUrl, {
     method: context.method,
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: context.headers,
     body: JSON.stringify({
       name: '  test-dog  ',
       age: 15,
@@ -109,6 +112,7 @@ test(postPetSuite, "should had created the pet", async (context: PetSuiteContext
   assertEquals(pet.age,  15);
 });
 
+
 // LIST Pet
 //////////////////////////////////////////////////////////////////////////////
 const listPetSuite: TestSuite<PetSuiteContext> = new TestSuite({
@@ -118,14 +122,53 @@ const listPetSuite: TestSuite<PetSuiteContext> = new TestSuite({
   beforeAll(context: PetSuiteContext) {
     console.info = () => {};
     context.petsIds = [];
-    context.endpointUrl = `${API_URL}/pets`;
     context.method = 'GET';
+    context.endpointUrl = `${API_URL}/pets`;
+    context.headers = {
+      'Content-Type': 'application/json',
+    };
     context.testFactory = new IntegrationTestFactory({
       endpointUrl: context.endpointUrl, 
+      headers: context.headers,
       method: context.method
     });
     context.appServer = new AppServer({port: Number(PORT), env: ENV, flushDB: true});
-    return context.appServer.run();
+    return context.appServer.run().then(() => {
+      const data = [
+        {
+          name: 'animal1',
+          species: Species.Cat,
+          age: 10,
+          insurancePolicy: undefined,
+          description: undefined
+        },
+        {
+          name: 'animal2',
+          species: Species.Dog,
+          age: 2,
+          insurancePolicy: undefined,
+          description: undefined
+        },
+        {
+          name: 'animal3',
+          species: Species.Dog,
+          age: 3,
+          insurancePolicy: undefined,
+          description: undefined
+        },
+        {
+          name: 'animal4',
+          species: Species.Mice,
+          age: 4,
+          insurancePolicy: undefined,
+          description: undefined
+        }
+      ];
+      data.forEach(async (pet) => {
+        const res = await PetServices.addPet(pet);
+        context.petsIds.push(res.lastInsertId);
+      });
+    })
   },
   afterAll(context: PetSuiteContext) {
     // Remove all inserted pets
@@ -176,4 +219,37 @@ test(listPetSuite, "should return 400 status code if sortBy is too long", async 
 test(listPetSuite, "should return 400 status code if sortBy does not correspond to any field", async (context: PetSuiteContext) => {
   const validationTest = context.testFactory.buildSearchValidation();
   await validationTest([['sortBy', 'unknown']], 'sortBy=unknown is not a field of Pet');
+});
+
+test(listPetSuite, "should return 3 elements if page=1 and pageSize=3", async (context: PetSuiteContext) => {
+  const url = `${context.endpointUrl}?page=1&pageSize=3`;
+  const res = await fetch(url, {
+    method: context.method,
+    headers: context.headers
+  });
+  const resBody = await res.json();
+  assertEquals(res.status, 200);
+  assertEquals(resBody.length, 3);
+});
+
+test(listPetSuite, "should return elements sorted by name in descendent order if sortBy=name and order=desc", async (context: PetSuiteContext) => {
+  const url = `${context.endpointUrl}?order=desc&sortBy=name`;
+  const res = await fetch(url, {method: context.method, headers: context.headers});
+  const resBody = await res.json();
+  assertEquals(res.status, 200);
+  assertEquals(resBody[0].name, 'animal4');
+  assertEquals(resBody[1].name, 'animal3');
+  assertEquals(resBody[2].name, 'animal2');
+  assertEquals(resBody[3].name, 'animal1');
+});
+
+test(listPetSuite, "should return elements sorted by age in ascendent order if sortBy=age and order=asc", async (context: PetSuiteContext) => {
+  const url = `${context.endpointUrl}?order=asc&sortBy=age`;
+  const res = await fetch(url, {method: context.method, headers: context.headers});
+  const resBody = await res.json();
+  assertEquals(res.status, 200);
+  assertEquals(resBody[0].age, 2);
+  assertEquals(resBody[1].age, 3);
+  assertEquals(resBody[2].age, 4);
+  assertEquals(resBody[3].age, 10);
 });
