@@ -44,10 +44,8 @@ const postPetSuite: TestSuite<PetSuiteContext> = new TestSuite({
     return context.appServer.run();
   },
   afterAll(context: PetSuiteContext) {
-    // Remove all inserted pets
-    context.petsIds.forEach(element => {
-      PetServices.deletePet({id: element});
-    });
+    // No need to remove data from DB since it's flushed at the start of each TestSuite
+    // Just stop the app server
     return context.appServer.stop();
   },
   beforeEach() {
@@ -171,10 +169,8 @@ const listPetSuite: TestSuite<PetSuiteContext> = new TestSuite({
     })
   },
   afterAll(context: PetSuiteContext) {
-    // Remove all inserted pets
-    context.petsIds.forEach(element => {
-      PetServices.deletePet({id: element});
-    });
+  // No need to remove data from DB since it's flushed at the start of each TestSuite
+  // Just stop the app server
     return context.appServer.stop();
   },
   beforeEach() {
