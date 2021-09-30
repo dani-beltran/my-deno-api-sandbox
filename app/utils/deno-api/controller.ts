@@ -57,7 +57,7 @@ export class Controller {
     // payload will be an object consisting of a code and a payload. If not customized
     // send 200 and the payload as received in this method.
     //
-    res.setStatus(payload?.code || 200);
+    res.setStatus(payload?.statusCode || 200);
     const responsePayload = payload?.payload !== undefined
       ? payload.payload
       : payload;
