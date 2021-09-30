@@ -5,10 +5,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Deno debug",
+      "name": "Launch Deno sandbox debug",
       "request": "launch",
       "type": "pwa-node",
-      "program": "main.ts",
+      "program": "app/main.ts",
       "cwd": "${workspaceFolder}",
       "runtimeExecutable": "deno",
       "runtimeArgs": [
