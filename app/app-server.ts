@@ -11,6 +11,8 @@ import { Pet } from "./resources/pet/pet.model.ts";
 import { PetRouter } from "./resources/pet/pet.router.ts";
 import { Player } from "./resources/player/player.model.ts";
 import { PlayerRouter } from "./resources/player/player.router.ts";
+import { CountryRouter } from "./resources/country/country.router.ts";
+import { Country } from "./resources/country/country.model.ts";
 
 /**
  * The application server that runs the RESTful API.
@@ -90,7 +92,8 @@ export class AppServer {
     // it is good practice to put them first
     db.link([
       Pet,
-      Player
+      Player,
+      Country
     ]);
   }
 
@@ -103,6 +106,7 @@ export class AppServer {
     // Resources routes
     PetRouter.registerRoutes(app, basePath);
     PlayerRouter.registerRoutes(app, basePath);
+    CountryRouter.registerRoutes(app, basePath);
   }
 
   /**
