@@ -4,6 +4,11 @@ export enum  ResponseType {
   json = 'json',
   text = 'text'
 }
+
+/**
+ * This class is to be used as a factory for different integration tests.
+ * The API integration tests consist on requests to the API endpoints.
+ */
 export class IntegrationTestFactory {
   endpointUrl: string;
   headers: HeadersInit;
@@ -19,11 +24,19 @@ export class IntegrationTestFactory {
     this.method = params.method;
   }
 
+  /**
+   * Builds a validation test function for request that send a body.
+   * @param params.responseType It's the response data type expected. Can be json or text.
+   * @param params.paramId It's the URL param id to assign to the end of the endpoint URL
+   */
   buildBodyValidationTest(params?: {
+    paramId?: number,
     responseType?: ResponseType
   }) {
     return async (input: Dictionary<string|number|boolean>, expected: string) => {
-      const res = await fetch(this.endpointUrl, {
+      let url = this.endpointUrl;
+      url += params?.paramId ? `/${params.paramId}` : '';
+      const res = await fetch(url, {
         method: this.method,
         headers: this.headers,
         body: JSON.stringify(input),
@@ -37,6 +50,10 @@ export class IntegrationTestFactory {
     };
   }
 
+  /**
+   * Builds a validation test function for request that send search query parameters.
+   * @param params.responseType It's the response data type expected. Can be json or text.
+   */
   buildSearchValidation(params?: {
     responseType?: ResponseType
   }) {
