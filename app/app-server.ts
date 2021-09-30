@@ -9,6 +9,8 @@ import {
 } from "./deps.ts";
 import { Pet } from "./resources/pet/pet.model.ts";
 import { PetRouter } from "./resources/pet/pet.router.ts";
+import { Player } from "./resources/player/player.model.ts";
+import { PlayerRouter } from "./resources/player/player.router.ts";
 
 /**
  * The application server that runs the RESTful API.
@@ -88,6 +90,7 @@ export class AppServer {
     // it is good practice to put them first
     db.link([
       Pet,
+      Player
     ]);
   }
 
@@ -99,6 +102,7 @@ export class AppServer {
     this.registerOtherRoutes(app, basePath);
     // Resources routes
     PetRouter.registerRoutes(app, basePath);
+    PlayerRouter.registerRoutes(app, basePath);
   }
 
   /**
