@@ -21,6 +21,19 @@ export function upperFirst(string: string) {
   return string.charAt(0).toLowerCase() + string.slice(1);
 }
 
+/**
+ * Converts a string to a Date.
+ * Returns undefined if the string cannot be converted to a valid date.
+ * @param str 
+ * @returns 
+ */
+ export function strToDate(str: string) {
+  const timestamp = Date.parse(str);
+  if (isNaN(timestamp) == false) {
+    return new Date(timestamp);
+  }
+}
+
 // COLLECTION
 ///////////////////////////////
 
