@@ -56,13 +56,13 @@ export async function fetchById(modelClass: typeof Model, id: number) {
  * @returns an array of instances of the model fetched from the DB.
  */
 export function fetchList(modelClass: IModel, params: ListParams) {
-  const query = modelClass.offset((params.page - 1) * params.pageSize);
-  query.limit(params.pageSize);
-  if (params.sortBy) {
-    if (hasField(modelClass, params.sortBy)) {
-      query.orderBy(params.sortBy, params.order);
+  const query = modelClass.offset((params.page - 1) * params.page_size);
+  query.limit(params.page_size);
+  if (params.sort_by) {
+    if (hasField(modelClass, params.sort_by)) {
+      query.orderBy(params.sort_by, params.order);
     } else {
-      throw { code: errors.notValid, message: `sortBy=${params.sortBy} is not a field of ${modelClass.name}` };
+      throw { code: errors.notValid, message: `sort_by=${params.sort_by} is not a field of ${modelClass.name}` };
     }
   }
   return query.all();

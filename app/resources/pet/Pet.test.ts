@@ -197,28 +197,28 @@ test(listPetSuite, "should return 400 status code if page is not greater than 0"
   await validationTest([['page', '0']], 'page: Expect value to be greater than 0 (actual: 0)');
 });
 
-test(listPetSuite, "should return 400 status code if pageSize is not a number", async (context: PetSuiteContext) => {
+test(listPetSuite, "should return 400 status code if page_size is not a number", async (context: PetSuiteContext) => {
   const validationTest = context.testFactory.buildSearchValidation();
-  await validationTest([['pageSize', 'aa']], 'pageSize: Unknown number value');
+  await validationTest([['page_size', 'aa']], 'page_size: Unknown number value');
 });
 
-test(listPetSuite, "should return 400 status code if pageSize is not greater than 0", async (context: PetSuiteContext) => {
+test(listPetSuite, "should return 400 status code if page_size is not greater than 0", async (context: PetSuiteContext) => {
   const validationTest = context.testFactory.buildSearchValidation();
-  await validationTest([['pageSize', '0']], 'pageSize: Expect value to be greater than 0 (actual: 0)');
+  await validationTest([['page_size', '0']], 'page_size: Expect value to be greater than 0 (actual: 0)');
 });
 
-test(listPetSuite, "should return 400 status code if sortBy is too long", async (context: PetSuiteContext) => {
+test(listPetSuite, "should return 400 status code if sort_by is too long", async (context: PetSuiteContext) => {
   const validationTest = context.testFactory.buildSearchValidation();
-  await validationTest([['sortBy', 'a'.repeat(201)]], 'sortBy: Expect length to be maximum of 200 characters (actual: 201)');
+  await validationTest([['sort_by', 'a'.repeat(201)]], 'sort_by: Expect length to be maximum of 200 characters (actual: 201)');
 });
 
-test(listPetSuite, "should return 400 status code if sortBy does not correspond to any field", async (context: PetSuiteContext) => {
+test(listPetSuite, "should return 400 status code if sort_by does not correspond to any field", async (context: PetSuiteContext) => {
   const validationTest = context.testFactory.buildSearchValidation();
-  await validationTest([['sortBy', 'unknown']], 'sortBy=unknown is not a field of Pet');
+  await validationTest([['sort_by', 'unknown']], 'sort_by=unknown is not a field of Pet');
 });
 
-test(listPetSuite, "should return 3 elements if page=1 and pageSize=3", async (context: PetSuiteContext) => {
-  const url = `${context.endpointUrl}?page=1&pageSize=3`;
+test(listPetSuite, "should return 3 elements if page=1 and page_size=3", async (context: PetSuiteContext) => {
+  const url = `${context.endpointUrl}?page=1&page_size=3`;
   const res = await fetch(url, {
     method: context.method,
     headers: context.headers
@@ -228,8 +228,8 @@ test(listPetSuite, "should return 3 elements if page=1 and pageSize=3", async (c
   assertEquals(resBody.length, 3);
 });
 
-test(listPetSuite, "should return elements sorted by name in descendent order if sortBy=name and order=desc", async (context: PetSuiteContext) => {
-  const url = `${context.endpointUrl}?order=desc&sortBy=name`;
+test(listPetSuite, "should return elements sorted by name in descendent order if sort_by=name and order=desc", async (context: PetSuiteContext) => {
+  const url = `${context.endpointUrl}?order=desc&sort_by=name`;
   const res = await fetch(url, {method: context.method, headers: context.headers});
   const resBody = await res.json();
   assertEquals(res.status, 200);
@@ -239,8 +239,8 @@ test(listPetSuite, "should return elements sorted by name in descendent order if
   assertEquals(resBody[3].name, 'animal1');
 });
 
-test(listPetSuite, "should return elements sorted by age in ascendent order if sortBy=age and order=asc", async (context: PetSuiteContext) => {
-  const url = `${context.endpointUrl}?order=asc&sortBy=age`;
+test(listPetSuite, "should return elements sorted by age in ascendent order if sort_by=age and order=asc", async (context: PetSuiteContext) => {
+  const url = `${context.endpointUrl}?order=asc&sort_by=age`;
   const res = await fetch(url, {method: context.method, headers: context.headers});
   const resBody = await res.json();
   assertEquals(res.status, 200);
