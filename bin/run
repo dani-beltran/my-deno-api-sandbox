@@ -6,7 +6,7 @@
 # Run it from the project folder.
 #
 # OPTIONS
-# -d        Run it in development mode. It runs a watcher and doesnt check 
+# -w        Run it in watcher mode. It runs a watcher and doesnt check 
 #           typings for faster reloading.
 # -h    Show help instructions on this script
 # -u        Update locked dependencies before running the server.
@@ -16,18 +16,18 @@
 
 entryPoint="./app/main.ts"
 dependenciesFolder="./app/deps.ts"
-dev=false
+watcher=false
 update=false
 lint=false
 reload=false
 help=false
 check=false
 
-while getopts dulrthc flag
+while getopts wulrthc flag
 do
   case "${flag}" in
       c) check=true;;
-      d) dev=true;;
+      w) watcher=true;;
       u) update=true;;
       l) lint=true;;
       r) reload=true;;
@@ -39,7 +39,7 @@ if "$help"; then
     echo ""
     echo "This script runs the server with Deno."
     echo "OPTIONS: "
-    echo "-d    Run it in development mode. It runs a watcher and doesnt check typings for faster reloading. "
+    echo "-w    Run it in watcher mode. It runs a watcher and doesnt check typings for faster reloading. Useful for development."
     echo "-h    Show help instructions on this script"
     echo "-l    Run linter before running the server."
     echo "-r    Reload all cached dependencies before running server."
@@ -66,12 +66,10 @@ if "$lint"; then
     echo "Running linter..."
     deno lint --unstable
 fi
-if "$dev"; then
-    echo 'Running app in development mode'
-    printf 'PORT=8000\nENV=dev' > .env;
-    deno run --allow-net --allow-read --allow-write --allow-env --watch --unstable --lock=lock.json $check_param $entryPoint
+if "$watcher"; then
+    echo 'Running app in watcher mode'
+    deno run --allow-net --allow-read --allow-write --allow-env --unstable --lock=lock.json --watch $check_param $entryPoint
 else 
-    echo 'Running app in production mode'
-    printf 'PORT=80\nENV=production' > .env;
-    deno run --allow-net --allow-read --allow-write --allow-env --lock=lock.json --cached-only --unstable $check_param $entryPoint
+    echo 'Running app'
+    deno run --allow-net --allow-read --allow-write --allow-env --unstable --lock=lock.json --cached-only  $check_param $entryPoint
 fi

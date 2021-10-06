@@ -1,4 +1,2 @@
 #!/bin/bash -ex
-
-printf 'PORT=3000\nENV=test' > .env;
 deno test --allow-all --no-check app/resources/**/*.test.ts
