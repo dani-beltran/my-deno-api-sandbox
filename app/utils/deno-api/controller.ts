@@ -25,7 +25,7 @@ export class Controller {
     req: Request,
     res: Response,
     serviceOperation: (params: any) => any,
-    validator?: (params: any) => any,
+    validator?: ((params: any) => any) | null,
     extraParams?: {[key: string]: number | string | boolean}
   ) {
     try {
@@ -36,7 +36,7 @@ export class Controller {
         params = Controller.getValidatedParams(req, validator);
       }
       if (extraParams) {
-        params = {...params, extraParams};
+        params = {...params, ...extraParams};
       }
       const serviceResponse = await serviceOperation(params);
       Controller.sendResponse(res, serviceResponse);

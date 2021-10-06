@@ -1,7 +1,6 @@
 import {
   TestSuite,
   test,
-  config,
 } from "../../deps.ts";
 import { Species } from "./pet.model.ts";
 import * as PetServices from "./pet.services.ts";
@@ -18,8 +17,20 @@ interface PetSuiteContext {
   testFactory: IntegrationTestFactory,
 }
 
-const { PORT, ENV } = config({safe: true});
+const PORT = 8888;
 const API_URL = `http://localhost:${PORT}/api`;
+
+function getTestAppServer() {
+  return new AppServer({
+    port: Number(PORT), 
+    env: 'test', flushDB: true, 
+    authServerConfig: {
+      host: 'fake',
+      clientId: 'fake',
+      clientSecret: 'fake'
+    }
+  });
+}
 
 // CREATE Pet
 //////////////////////////////////////////////////////////////////////////////
@@ -40,7 +51,7 @@ const postPetSuite: TestSuite<PetSuiteContext> = new TestSuite({
       headers: context.headers,
       method: context.method
     });
-    context.appServer = new AppServer({port: Number(PORT), env: ENV, flushDB: true});
+    context.appServer = getTestAppServer();
     return context.appServer.run();
   },
   afterAll(context: PetSuiteContext) {
@@ -130,7 +141,7 @@ const listPetSuite: TestSuite<PetSuiteContext> = new TestSuite({
       headers: context.headers,
       method: context.method
     });
-    context.appServer = new AppServer({port: Number(PORT), env: ENV, flushDB: true});
+    context.appServer = getTestAppServer();
     return context.appServer.run().then(() => {
       const data = [
         {
@@ -271,7 +282,7 @@ const getPetSuite: TestSuite<PetSuiteContext> = new TestSuite({
       headers: context.headers,
       method: context.method
     });
-    context.appServer = new AppServer({port: Number(PORT), env: ENV, flushDB: true});
+    context.appServer = getTestAppServer();
     return context.appServer.run().then(() => {
       const data = [
         {
@@ -346,7 +357,7 @@ const updatePetSuite: TestSuite<PetSuiteContext> = new TestSuite({
       headers: context.headers,
       method: context.method
     });
-    context.appServer = new AppServer({port: Number(PORT), env: ENV, flushDB: true});
+    context.appServer = getTestAppServer();
     return context.appServer.run().then(() => {
       const data = [
         {
@@ -475,7 +486,7 @@ const patchPetSuite: TestSuite<PetSuiteContext> = new TestSuite({
       headers: context.headers,
       method: context.method
     });
-    context.appServer = new AppServer({port: Number(PORT), env: ENV, flushDB: true});
+    context.appServer = getTestAppServer();
     return context.appServer.run().then(() => {
       const data = [
         {
@@ -596,7 +607,7 @@ const deletePetSuite: TestSuite<PetSuiteContext> = new TestSuite({
       headers: context.headers,
       method: context.method
     });
-    context.appServer = new AppServer({port: Number(PORT), env: ENV, flushDB: true});
+    context.appServer = getTestAppServer();
     return context.appServer.run().then(() => {
       const data = [
         {

@@ -1,3 +1,5 @@
+import { tokenResponse } from "./types.ts";
+
 /**
  * This class represents a Single Sign-On (SSO) server. You can use it to
  * login users in the server and fetch their profile data. 
@@ -125,14 +127,4 @@ export class SsoServer {
     const url = new URL(path, this.authServerUrl);
     return url.toString();
   }
-}
-
-type tokenResponse = {
-  "access_token": string,
-  "expires_in": number,
-  "id_token": string,
-  "refresh_expires_in": number,
-  "refresh_token": string,
-  "scope": string,
-  "token_type": string
 }

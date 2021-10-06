@@ -1,41 +1,48 @@
 import {
   Database,
   json,
-  Opine,
   opine,
+  Opine,
   pathJoin,
   Server,
   SQLite3Connector,
 } from "./deps.ts";
+import { Country } from "./resources/country/country.model.ts";
+import { CountryRouter } from "./resources/country/country.router.ts";
 import { Pet } from "./resources/pet/pet.model.ts";
 import { PetRouter } from "./resources/pet/pet.router.ts";
 import { Player } from "./resources/player/player.model.ts";
 import { PlayerRouter } from "./resources/player/player.router.ts";
-import { CountryRouter } from "./resources/country/country.router.ts";
-import { Country } from "./resources/country/country.model.ts";
+import { SsoServer } from "./utils/deno-auth/sso-server.ts";
+import { AuthRouter } from "./components/auth/auth.router.ts";
+import type { authServerConfig } from "./utils/deno-auth/types.ts";
+
 
 /**
  * The application server that runs the RESTful API.
  * Register here the routes and the models of the resources.
  */
 export class AppServer {
-  public db?: Database;
-  public port: number;
-  public env: string;
-  public debug: boolean;
+  private db?: Database;
   private httpServer?: Server;
-  private flushDB: boolean;
+  private readonly flushDB: boolean;
+  public readonly debug: boolean;
+  public readonly env: string;
+  public readonly port: number;
+  public readonly authServerConfig: authServerConfig;
 
   constructor(opts: {
     port: number;
     env?: string;
     debug?: boolean;
     flushDB?: boolean;
+    authServerConfig: authServerConfig;
   }) {
     this.env = opts.env ?? "production";
     this.port = opts.port;
     this.debug = opts.debug ?? false;
     this.flushDB = opts.flushDB ?? false;
+    this.authServerConfig = opts.authServerConfig;
   }
 
   /**
@@ -44,6 +51,9 @@ export class AppServer {
   async run() {
     this.db = this.connectDB();
     const opineServer = opine();
+    opineServer.locals = {
+      authServer: this.connectAuthServer()
+    };
     this.registerModels(this.db);
     await this.db.sync({drop: this.flushDB});
     this.registerMiddleware(opineServer);
@@ -73,6 +83,20 @@ export class AppServer {
       filepath: `./database${str}.sqlite`,
     });
     return new Database(connector, { debug: true });
+  }
+
+  /**
+   * Connects to the authentication server and returns a object with the interface
+   * to communicate with it.
+   * @param authServerConfig 
+   * @returns 
+   */
+  private connectAuthServer() {
+    return new SsoServer({
+      host: this.authServerConfig.host,
+      clientId: this.authServerConfig.clientId,
+      clientSecret: this.authServerConfig.clientSecret
+    });
   }
 
   /**
@@ -107,6 +131,7 @@ export class AppServer {
     PetRouter.registerRoutes(app, basePath);
     PlayerRouter.registerRoutes(app, basePath);
     CountryRouter.registerRoutes(app, basePath);
+    AuthRouter.registerRoutes(app, basePath);
   }
 
   /**
