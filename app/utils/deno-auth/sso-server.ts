@@ -1,3 +1,4 @@
+import { jsonToEncodedForm } from "../generics.ts";
 import { tokenResponse } from "./types.ts";
 
 /**
@@ -58,9 +59,9 @@ export class SsoServer {
     const res = await fetch(url.toString(), {
       method: 'POST', 
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
       },
-      body: JSON.stringify(requestBody)
+      body: jsonToEncodedForm(requestBody)
     });
     return res.json();
   }
@@ -91,16 +92,16 @@ export class SsoServer {
 
   /**
    * Request the authenticated user data.
-   * @param token 
+   * @param accessToken 
    */
-  async requestUserInfo(token: string) {
+  async requestUserInfo(accessToken: string) {
     const path = this.authServerUrl.pathname + '/userinfo';
     const url = new URL(path, this.authServerUrl);
     const res = await fetch(url.toString(), {
       method: 'GET', 
       headers: {
         'Content-Type': 'application/json',
-        Authorization: token
+        Authorization: `Bearer ${accessToken}`
       }
     });
     return res.json();
@@ -111,9 +112,14 @@ export class SsoServer {
    * be sent to perform the login. 
    * @returns the authentication server URL.
    */
-  getAuthUrl() {
+  getAuthUrl(redirectUri: string) {
     const path = this.authServerUrl.pathname + '/auth';
     const url = new URL(path, this.authServerUrl);
+    url.searchParams.set('client_id', this.clientId);
+    url.searchParams.set('response_mode', 'fragment');
+    url.searchParams.set('response_type', 'code');
+    url.searchParams.set('scope', 'openid');
+    url.searchParams.set('redirect_uri', redirectUri);
     return url.toString();
   }
 

@@ -54,3 +54,21 @@ export function entriesToDictionaryReducer<T>(
   }
   return acc;
 }
+
+// OBJECT
+///////////////////////////////
+
+/**
+ * Transform a JSON object into x-www-form-urlencoded format.
+ * @param json 
+ * @returns 
+ */
+export function jsonToEncodedForm(json: {[key:string]: string | number | boolean}) {
+  const formBody = [];
+  for (const property in json) {
+    const encodedKey = encodeURIComponent(property);
+    const encodedValue = encodeURIComponent(json[property]);
+    formBody.push(encodedKey + "=" + encodedValue);
+  }
+  return formBody.join("&");
+}

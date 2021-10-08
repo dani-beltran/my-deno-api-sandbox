@@ -1,28 +1,32 @@
 import { SsoServer } from "../../utils/deno-auth/sso-server.ts";
 
-export function getAuthUrls(params: {authServer: SsoServer}) {
+export function getAuthUrls(params: {
+  authServer: SsoServer,
+  redirect_uri?: string
+}) {
+  const redirectUri = params.redirect_uri || '';
   return {
-    authUrl: params.authServer.getAuthUrl(),
+    authUrl: params.authServer.getAuthUrl(redirectUri),
     logoutUrl: params.authServer.getLogoutUrl()
   }
 }
 
 export function getToken(params: {
-  authCode?: string, 
-  redirectUri?: string, 
-  refreshToken?: string,
+  auth_code?: string, 
+  redirect_uri?: string, 
+  refresh_token?: string,
   authServer: SsoServer
 }) {
-  if (params.authCode && params.redirectUri) {
-    return params.authServer.requestToken(params.authCode, params.redirectUri);
-  } else if (params.refreshToken) {
-    return params.authServer.refreshToken(params.refreshToken);
+  if (params.auth_code && params.redirect_uri) {
+    return params.authServer.requestToken(params.auth_code, params.redirect_uri);
+  } else if (params.refresh_token) {
+    return params.authServer.refreshToken(params.refresh_token);
   } else {
     throw {code: 'notValid', message: 'Missing parameters'};
   }
 }
 
-export function getUserInfo(params: {token: string, authServer: SsoServer}) {
-  return params.authServer.requestUserInfo(params.token);
+export function getUserInfo(params: {access_token: string, authServer: SsoServer}) {
+  return params.authServer.requestUserInfo(params.access_token);
 }
 
