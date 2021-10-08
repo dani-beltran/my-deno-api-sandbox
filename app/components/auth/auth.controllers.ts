@@ -36,7 +36,6 @@ export async function getTokenCtrl(req: Request, res: Response<tokenResponse>) {
   );
 }
 
-// ToDo add validator
 export async function getUserInfoCtrl(req: Request, res: Response<any>) {
   const validator = buildValidatorFromSchema({
     access_token: string.normalize().trim()
