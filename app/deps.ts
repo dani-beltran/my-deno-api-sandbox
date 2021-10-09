@@ -2,13 +2,13 @@ export {
   serve,
   Server
 } from "https://deno.land/std@0.107.0/http/server_legacy.ts";
-export { join as pathJoin} from "https://deno.land/std@0.108.0/path/mod.ts";
-export { signal } from "https://deno.land/std@0.108.0/signal/mod.ts";
+export { join as pathJoin} from "https://deno.land/std@0.110.0/path/mod.ts";
+export { signal } from "https://deno.land/std@0.110.0/signal/mod.ts";
 
 export {
   assertArrayIncludes,
   assertEquals,
-} from "https://deno.land/std@0.108.0/testing/asserts.ts";
+} from "https://deno.land/std@0.110.0/testing/asserts.ts";
 export {
   Database,
   DataTypes,
