@@ -95,7 +95,8 @@ export class AppServer {
     return new SsoServer({
       host: this.authServerConfig.host,
       clientId: this.authServerConfig.clientId,
-      clientSecret: this.authServerConfig.clientSecret
+      clientSecret: this.authServerConfig.clientSecret,
+      realm: this.authServerConfig.realm
     });
   }
 
