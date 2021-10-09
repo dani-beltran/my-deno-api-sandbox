@@ -8,7 +8,6 @@ WORKDIR /home/deno/srv
 COPY bin bin
 COPY app app
 COPY lock.json lock.json
-COPY .env .env
 
 # Install dependencies
 RUN deno cache --unstable --lock=lock.json app/deps.ts
