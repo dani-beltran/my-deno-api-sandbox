@@ -27,11 +27,11 @@ while getopts wulrthc flag
 do
   case "${flag}" in
       c) check=true;;
-      w) watcher=true;;
-      u) update=true;;
+      h) help=true;;
       l) lint=true;;
       r) reload=true;;
-      h) help=true;;
+      u) update=true;;
+      w) watcher=true;;
   esac
 done
 
@@ -39,11 +39,12 @@ if "$help"; then
     echo ""
     echo "This script runs the server with Deno."
     echo "OPTIONS: "
-    echo "-w    Run it in watcher mode. It runs a watcher and doesnt check typings for faster reloading. Useful for development."
+    echo "-c    Run with TypeScript type checking"
     echo "-h    Show help instructions on this script"
     echo "-l    Run linter before running the server."
     echo "-r    Reload all cached dependencies before running server."
     echo "-u    Update locked dependencies before running the server."
+    echo "-w    Run it in watcher mode. It runs a watcher and doesnt check typings for faster reloading. Useful for development."
     echo ""
     exit
 fi
@@ -53,14 +54,13 @@ if "$check"; then
 else 
     check_param="--no-check"
 fi
-
-if "$reload"; then
-    echo "Reloading cached dependencies..."
-    deno cache --reload --unstable --no-check $entryPoint
-fi
 if "$update"; then
     echo "Updating locked dependencies..."
-    deno cache --lock=lock.json --lock-write  --no-check --unstable $dependenciesFolder
+    deno cache --lock=lock.json --lock-write --unstable $check_param $dependenciesFolder
+fi
+if "$reload"; then
+    echo "Reloading cached dependencies..."
+    deno cache --reload --lock=lock.json --unstable $check_param $entryPoint
 fi
 if "$lint"; then
     echo "Running linter..."
