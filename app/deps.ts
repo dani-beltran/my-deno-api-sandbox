@@ -41,4 +41,5 @@ export type {
   Type,
 } from "https://denoporter.sirjosh.workers.dev/v1/deno.land/x/computed_types@v1.10.2/src/index.ts";
 import "https://deno.land/x/lodash@4.17.19/dist/lodash.js";
+// deno-lint-ignore no-explicit-any
 export const lodash = (self as any)._;
