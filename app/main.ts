@@ -5,6 +5,7 @@ import {
   AUTH_CLIENT_SECRET,
   AUTH_HOST,
   AUTH_REALM,
+  AUTH_SSL,
   ENV,
   PORT,
 } from "./env.ts";
@@ -18,7 +19,8 @@ const appServer = new AppServer({
     host: AUTH_HOST,
     clientId: AUTH_CLIENT_ID,
     clientSecret: AUTH_CLIENT_SECRET,
-    realm: AUTH_REALM
+    realm: AUTH_REALM,
+    secure: AUTH_SSL === "true"
   },
 });
 appServer.run();

@@ -20,6 +20,7 @@ export class SsoServer {
   private readonly authServerUrl: URL;
   private readonly realm: string;
   private readonly host: string;
+  private readonly secure: boolean;
 
   /**
    * @param opts.host
@@ -31,14 +32,17 @@ export class SsoServer {
     host: string,
     clientId: string,
     clientSecret: string,
-    realm?: string
+    realm?: string,
+    secure?: boolean
   }) {
     this.host = opts.host;
+    this.secure = opts.secure ?? true;
     this.realm = opts.realm || opts.clientId;
     this.clientId = opts.clientId;
     this.clientSecret = opts.clientSecret;
     this.authServerUrl = new URL(`https://${this.host}`);
     this.authServerUrl.pathname = `/auth/realms/${this.realm}/protocol/${this.AUTH_SERVER_PROTOCOL}`;
+    this.authServerUrl.protocol = this.secure ? 'https' : 'http';
   }
 
   /**

@@ -2,7 +2,8 @@ export type authServerConfig = {
   host: string,
   clientId: string,
   clientSecret: string,
-  realm?: string
+  realm?: string,
+  secure?: boolean
 }
 
 export type tokenResponse = {

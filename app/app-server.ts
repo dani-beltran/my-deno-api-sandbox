@@ -96,7 +96,8 @@ export class AppServer {
       host: this.authServerConfig.host,
       clientId: this.authServerConfig.clientId,
       clientSecret: this.authServerConfig.clientSecret,
-      realm: this.authServerConfig.realm
+      realm: this.authServerConfig.realm,
+      secure: this.authServerConfig.secure,
     });
   }
 
