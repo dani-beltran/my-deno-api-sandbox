@@ -1,4 +1,4 @@
-import { DataTypes, Model, Schema, string, Type } from "../../deps.ts";
+import { DataTypes, Model, Schema, string, Type } from "../../../deps.ts";
 
 /**
  * Country model represents a country from the world.

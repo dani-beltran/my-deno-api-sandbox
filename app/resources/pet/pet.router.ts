@@ -1,4 +1,4 @@
-import { Opine, pathJoin, Router } from "../../deps.ts";
+import { Opine, pathJoin, Router } from "../../../deps.ts";
 import * as petControllers from "./pet.controllers.ts";
 
 export const PetRouter = {

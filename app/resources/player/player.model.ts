@@ -1,4 +1,4 @@
-import { DataTypes, Model, number, Schema, string, Type } from "../../deps.ts";
+import { DataTypes, Model, number, Schema, string, Type } from "../../../deps.ts";
 import { strToDate } from "../../utils/generics.ts";
 
 /**

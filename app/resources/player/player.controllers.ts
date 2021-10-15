@@ -1,4 +1,4 @@
-import { Request, Response } from "../../deps.ts";
+import { Request, Response } from "../../../deps.ts";
 import { Controller } from "../../utils/deno-api/controller.ts";
 import  * as playerServices from "./player.services.ts";
 import { PlayerSchema, Player } from "./player.model.ts";

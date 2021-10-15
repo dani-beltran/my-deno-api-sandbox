@@ -1,4 +1,4 @@
-import { Values } from "../../deps.ts";
+import { Values } from "../../../deps.ts";
 import { fetchById, fetchList, create, updateById, deleteById } from "../../utils/denodb-extended/mod.ts";
 import { ListParams } from "../../utils/denodb-extended/types.ts";
 import { Player, PlayerSchema } from "./player.model.ts";

@@ -1,4 +1,4 @@
-import { assertEquals, Dictionary } from "../deps.ts";
+import { assertEquals, Dictionary } from "../../deps.ts";
 
 export enum  ResponseType {
   json = 'json',

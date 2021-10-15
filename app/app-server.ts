@@ -6,7 +6,7 @@ import {
   pathJoin,
   Server,
   SQLite3Connector,
-} from "./deps.ts";
+} from "../deps.ts";
 import { Country } from "./resources/country/country.model.ts";
 import { CountryRouter } from "./resources/country/country.router.ts";
 import { Pet } from "./resources/pet/pet.model.ts";

@@ -1,4 +1,4 @@
-import { Opine, pathJoin, Router } from "../../deps.ts";
+import { Opine, pathJoin, Router } from "../../../deps.ts";
 import * as ssoControllers from './auth.controllers.ts';
 
 export const AuthRouter = {

@@ -1,4 +1,4 @@
-import { DataTypes, Model, number, Schema, string, Type } from "../../deps.ts";
+import { DataTypes, Model, number, Schema, string, Type } from "../../../deps.ts";
 export enum Species {
   Dog = "dog",
   Cat = "cat",

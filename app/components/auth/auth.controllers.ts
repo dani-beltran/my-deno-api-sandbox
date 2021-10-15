@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { Request, Response, string } from "../../deps.ts";
+import { Request, Response, string } from "../../../deps.ts";
 import { Controller } from "../../utils/deno-api/controller.ts";
 import { buildValidatorFromSchema } from "../../utils/deno-api/validators.ts";
 import type { tokenResponse } from "../../utils/deno-auth/types.ts";

@@ -1,4 +1,4 @@
-import { Opine, pathJoin, Router } from "../../deps.ts";
+import { Opine, pathJoin, Router } from "../../../deps.ts";
 import * as countryControllers from "./country.controllers.ts";
 
 export const CountryRouter = {

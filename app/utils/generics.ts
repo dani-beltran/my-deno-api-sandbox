@@ -1,4 +1,4 @@
-import { Dictionary } from "../deps.ts";
+import { Dictionary } from "../../deps.ts";
 
 // STRING
 ///////////////////////////////

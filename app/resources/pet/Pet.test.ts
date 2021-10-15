@@ -1,11 +1,11 @@
 import {
   TestSuite,
   test,
-} from "../../deps.ts";
+} from "../../../deps.ts";
 import { Species } from "./pet.model.ts";
 import * as PetServices from "./pet.services.ts";
 import { AppServer } from "../../app-server.ts";
-import { assertEquals } from "../../deps.ts";
+import { assertEquals } from "../../../deps.ts";
 import { IntegrationTestFactory } from "../../utils/integration-test-factory.ts";
 
 interface PetSuiteContext {

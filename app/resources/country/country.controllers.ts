@@ -1,4 +1,4 @@
-import { Request, Response } from "../../deps.ts";
+import { Request, Response } from "../../../deps.ts";
 import { Controller } from "../../utils/deno-api/controller.ts";
 import  * as countryServices from "./country.services.ts";
 import { CountrySchema, Country } from "./country.model.ts";

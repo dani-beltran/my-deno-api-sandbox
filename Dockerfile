@@ -4,14 +4,14 @@ FROM denoland/deno:1.14.3
 USER deno
 WORKDIR /home/deno/srv
 
-# Add app files
+# Install dependencies
+COPY deps.ts deps.ts
+COPY lock.json lock.json
+RUN deno cache --unstable --lock=lock.json deps.ts
+
+# Add source code
 COPY bin bin
 COPY app app
-COPY lock.json lock.json
-
-# Install dependencies
-RUN deno cache --unstable --lock=lock.json app/deps.ts
-RUN deno cache --unstable app/main.ts
 
 EXPOSE 8000
 

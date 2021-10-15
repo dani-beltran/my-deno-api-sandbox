@@ -1,4 +1,4 @@
-import { signal } from "./deps.ts";
+import { signal } from "../deps.ts";
 import { AppServer } from "./app-server.ts";
 import {
   AUTH_CLIENT_ID,
