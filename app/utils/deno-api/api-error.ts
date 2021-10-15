@@ -20,6 +20,14 @@ export class ApiError {
       this.message = this.rawError?.message || 'Bad request';
       return;
     }
+    if (this.isNotAuthorizedError()) {
+      this.statusCode = 401;
+      this.message = this.rawError?.message || 'Not Authorized';
+    }
+    if (this.isForbiddenError()) {
+      this.statusCode = 403;
+      this.message = this.rawError?.message || 'Forbidden';
+    }
   }
 
   isNotFoundError() {
@@ -32,6 +40,18 @@ export class ApiError {
     return this.rawError === 'notValid' 
     || this.rawError?.code === 'notValid'
     || this.rawError?.statusCode === 400;
+  }
+
+  isNotAuthorizedError() {
+    return this.rawError === 'notAuthorized' 
+    || this.rawError?.code === 'notAuthorized'
+    || this.rawError?.statusCode === 401;
+  }
+
+  isForbiddenError() {
+    return this.rawError === 'forbidden' 
+    || this.rawError?.code === 'forbidden'
+    || this.rawError?.statusCode === 403;
   }
 
 }

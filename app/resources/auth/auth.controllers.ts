@@ -1,12 +1,12 @@
-// deno-lint-ignore-file no-explicit-any
+// deno-lint-ignore-file no-explicit-any camelcase
 import { Request, Response, string } from "../../../deps.ts";
 import { Controller } from "../../utils/deno-api/controller.ts";
-import { buildValidatorFromSchema } from "../../utils/deno-api/validators.ts";
+import { buildValidatorFromSchema, emptyValidator } from "../../utils/deno-api/validators.ts";
 import type { tokenResponse } from "../../utils/deno-auth/types.ts";
 import { toDefault } from "../../utils/denodb-extended/utils.ts";
 import * as ssoServices from './auth.services.ts';
 
-export async function getAuthUrls(req: Request, res: Response<{authUrl: string, logoutUrl: string}>) {
+export async function getAuthDataCtrl(req: Request, res: Response<{authUrl: string, logoutUrl: string}>) {
   const referer = req.headers.get('referer');
   const validator = buildValidatorFromSchema({
     redirect_uri: string.normalize().trim().optional().transform(toDefault(referer)),
@@ -14,13 +14,13 @@ export async function getAuthUrls(req: Request, res: Response<{authUrl: string, 
   await Controller.passRequestToService(
     req,
     res,
-    ssoServices.getAuthUrls,
+    ssoServices.getAuthData,
     validator,
     req.app.locals
   );
 }
 
-export async function getTokenCtrl(req: Request, res: Response<tokenResponse>) {
+export async function createTokenCtrl(req: Request, res: Response<tokenResponse>) {
   const referer = req.headers.get('referer');
   const validator = buildValidatorFromSchema({
     auth_code: string.normalize().trim().optional(),
@@ -30,21 +30,20 @@ export async function getTokenCtrl(req: Request, res: Response<tokenResponse>) {
   await Controller.passRequestToService(
     req,
     res,
-    ssoServices.getToken,
+    ssoServices.createToken,
     validator,
     req.app.locals
   );
 }
 
 export async function getUserInfoCtrl(req: Request, res: Response<any>) {
-  const validator = buildValidatorFromSchema({
-    access_token: string.normalize().trim()
-  });
+  const access_token = (req.headers.get('Authorization'))?.replace('Bearer ', '');
+  const extraParams = {...req.app.locals, access_token};
   await Controller.passRequestToService(
     req,
     res,
     ssoServices.getUserInfo,
-    validator,
-    req.app.locals
+    emptyValidator,
+    extraParams
   );
 }

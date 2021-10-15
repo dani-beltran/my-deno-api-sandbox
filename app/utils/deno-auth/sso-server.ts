@@ -87,9 +87,9 @@ export class SsoServer {
     const res = await fetch(url.toString(), {
       method: 'POST', 
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
       },
-      body: JSON.stringify(requestBody)
+      body: jsonToEncodedForm(requestBody)
     });
     return res.json();
   }
@@ -104,11 +104,24 @@ export class SsoServer {
     const res = await fetch(url.toString(), {
       method: 'GET', 
       headers: {
-        'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`
       }
     });
     return res.json();
+  }
+
+  /**
+   * @returns The SSO client id
+   */
+  getClientId() {
+    return this.clientId;
+  }
+
+  /**
+   * @returns The SSO realm
+   */
+   getRealm() {
+    return this.realm;
   }
 
   /**

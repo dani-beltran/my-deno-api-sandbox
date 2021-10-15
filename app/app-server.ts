@@ -14,7 +14,7 @@ import { PetRouter } from "./resources/pet/pet.router.ts";
 import { Player } from "./resources/player/player.model.ts";
 import { PlayerRouter } from "./resources/player/player.router.ts";
 import { SsoServer } from "./utils/deno-auth/sso-server.ts";
-import { AuthRouter } from "./components/auth/auth.router.ts";
+import { AuthRouter } from "./resources/auth/auth.router.ts";
 import type { authServerConfig } from "./utils/deno-auth/types.ts";
 
 

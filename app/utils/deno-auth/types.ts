@@ -13,5 +13,7 @@ export type tokenResponse = {
   "refresh_expires_in": number,
   "refresh_token": string,
   "scope": string,
-  "token_type": string
+  "token_type": string,
+  "error"?: string,
+  "error_description"?: string
 }

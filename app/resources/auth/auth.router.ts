@@ -9,8 +9,8 @@ export const AuthRouter = {
   registerRoutes: (app: Opine, basePath: string) => {
     const router = new Router();
 
-    router.get("/urls", ssoControllers.getAuthUrls);
-    router.get("/token", ssoControllers.getTokenCtrl);
+    router.get("/", ssoControllers.getAuthDataCtrl);
+    router.post("/token", ssoControllers.createTokenCtrl);
     router.get("/user-info", ssoControllers.getUserInfoCtrl);
     
     const path = pathJoin(basePath, 'auth');
