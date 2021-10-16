@@ -6,6 +6,10 @@ export class ApiError {
   readonly errorCode: string;
   readonly errorDefinitions = [
     {
+      statusCode: 301,
+      code: 'movePermanently'
+    },
+    {
       statusCode: 400,
       code: 'notValid'
     },
@@ -20,6 +24,14 @@ export class ApiError {
     {
       statusCode: 404,
       code: 'notFound'
+    },
+    {
+      statusCode: 405,
+      code: 'methodNotAllowed'
+    },
+    {
+      statusCode: 409,
+      code: 'conflict'
     },
   ]
 
