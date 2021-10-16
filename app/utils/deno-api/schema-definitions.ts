@@ -4,7 +4,7 @@ import { toDefault } from "./utils.ts";
 /**
  * List computed-types schema for validation
  */
- export const listSchema = {
+export const listSchema = {
   page: unknown.number().integer().gt(0).optional().transform(
     toDefault(1),
   ),
@@ -15,4 +15,8 @@ import { toDefault } from "./utils.ts";
     toDefault("asc" as const),
   ),
   "sort_by": string.max(200).trim().optional(),
+};
+
+export const getSchema = {
+  id: unknown.number().integer().gt(0),
 };

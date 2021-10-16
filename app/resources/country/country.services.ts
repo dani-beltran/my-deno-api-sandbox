@@ -1,6 +1,6 @@
 import { Values } from "../../../deps.ts";
-import { fetchById, fetchList, create, updateById, deleteById } from "../../utils/denodb-extended/mod.ts";
-import { ListParams } from "../../utils/denodb-extended/types.ts";
+import { fetchById, fetchList, create, updateById, deleteById } from "../../utils/deno-api/orm-methods.ts";
+import { ListParams } from "../../utils/deno-api/types.ts";
 import { Country, CountrySchema } from "./country.model.ts";
 
 interface updateCountrySchema extends CountrySchema {

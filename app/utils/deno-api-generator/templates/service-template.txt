@@ -1,6 +1,6 @@
-import { Values } from "../../deps.ts";
-import { fetchById, fetchList, create, updateById, deleteById } from "../../utils/denodb-extended/mod.ts";
-import { ListParams } from "../../utils/denodb-extended/types.ts";
+import { Values } from "../../../deps.ts";
+import { fetchById, fetchList, create, updateById, deleteById } from "../../utils/deno-api/orm-methods.ts";
+import { ListParams } from "../../utils/deno-api/types.ts";
 import { {{capitalizedName}}, {{capitalizedName}}Schema } from "./{{name}}.model.ts";
 
 interface update{{capitalizedName}}Schema extends {{capitalizedName}}Schema {

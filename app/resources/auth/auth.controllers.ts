@@ -1,14 +1,14 @@
 // deno-lint-ignore-file no-explicit-any camelcase
 import { Request, Response, string } from "../../../deps.ts";
 import { Controller } from "../../utils/deno-api/controller.ts";
-import { buildValidatorFromSchema, emptyValidator } from "../../utils/deno-api/validators.ts";
+import { ValidatorFactory } from "../../utils/deno-api/validator-factory.ts";
 import type { tokenResponse } from "../../utils/deno-auth/types.ts";
-import { toDefault } from "../../utils/denodb-extended/utils.ts";
+import { toDefault } from "../../utils/deno-api/utils.ts";
 import * as ssoServices from './auth.services.ts';
 
 export async function getAuthDataCtrl(req: Request, res: Response<{authUrl: string, logoutUrl: string}>) {
   const referer = req.headers.get('referer');
-  const validator = buildValidatorFromSchema({
+  const validator = ValidatorFactory.buildValidatorFromSchema({
     redirect_uri: string.normalize().trim().optional().transform(toDefault(referer)),
   });
   await Controller.passRequestToService(
@@ -22,7 +22,7 @@ export async function getAuthDataCtrl(req: Request, res: Response<{authUrl: stri
 
 export async function createTokenCtrl(req: Request, res: Response<tokenResponse>) {
   const referer = req.headers.get('referer');
-  const validator = buildValidatorFromSchema({
+  const validator = ValidatorFactory.buildValidatorFromSchema({
     auth_code: string.normalize().trim().optional(),
     redirect_uri: string.normalize().trim().optional().transform(toDefault(referer)),
     refresh_token: string.normalize().trim().optional()
@@ -43,7 +43,7 @@ export async function getUserInfoCtrl(req: Request, res: Response<any>) {
     req,
     res,
     ssoServices.getUserInfo,
-    emptyValidator,
+    ValidatorFactory.buildEmptyValidator(),
     extraParams
   );
 }

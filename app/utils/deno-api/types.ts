@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import { Model, Type } from "./deps.ts";
-import { listSchema } from "./list.ts";
+import { listSchema } from "./schema-definitions.ts";
+
 
 /**
  * Extended Model class type.
@@ -24,4 +25,4 @@ export type UpdatedResponse = { affectedRows: number };
 /**
  * 
  */
- export type ListParams = Type<typeof listSchema>;
+export type ListParams = Type<typeof listSchema>;

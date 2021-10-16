@@ -1,7 +1,8 @@
 // deno-lint-ignore-file no-explicit-any
-//
-// This file contains methods for extending and wrapping denodb lib.
-// It's extended with features from libs like "computed-types" 
+
+// This file contains methods for manipulating resources in the DB using an ORM. 
+// In this case the ORM is DenoDB. But it's also extended with features from 
+// libs like "computed-types".
 //
 import { Model, Values } from "./deps.ts";
 import { ListParams, CreatedResponse, UpdatedResponse, IModel } from "./types.ts";

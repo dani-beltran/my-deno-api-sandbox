@@ -6,7 +6,7 @@ import { Species } from "./pet.model.ts";
 import * as PetServices from "./pet.services.ts";
 import { AppServer } from "../../app-server.ts";
 import { assertEquals } from "../../../deps.ts";
-import { IntegrationTestFactory } from "../../utils/integration-test-factory.ts";
+import { IntegrationTestFactory } from "../../utils/deno-test/integration-test-factory.ts";
 
 interface PetSuiteContext {
   appServer: AppServer,
