@@ -37,7 +37,7 @@ export async function put{{capitalizedName}}Ctrl(req: Request, res: Response<Upd
     req,
     res,
     {{name}}Services.update{{capitalizedName}},
-    ValidatorFactory.buildUpdateValidator({{capitalizedName}}),
+    ValidatorFactory.buildUpdateValidator({{capitalizedName}}.schema),
   );
 }
 
@@ -46,7 +46,7 @@ export async function patch{{capitalizedName}}Ctrl(req: Request, res: Response<U
     req,
     res,
     {{name}}Services.update{{capitalizedName}},
-    ValidatorFactory.buildPatchValidator({{capitalizedName}}),
+    ValidatorFactory.buildPatchValidator({{capitalizedName}}.schema),
   );
 }
 

@@ -37,7 +37,7 @@ export async function putPlayerCtrl(req: Request, res: Response<UpdatedResponse>
     req,
     res,
     playerServices.updatePlayer,
-    ValidatorFactory.buildUpdateValidator(Player),
+    ValidatorFactory.buildUpdateValidator(Player.schema),
   );
 }
 
@@ -46,7 +46,7 @@ export async function patchPlayerCtrl(req: Request, res: Response<UpdatedRespons
     req,
     res,
     playerServices.updatePlayer,
-    ValidatorFactory.buildPatchValidator(Player),
+    ValidatorFactory.buildPatchValidator(Player.schema),
   );
 }
 

@@ -37,7 +37,7 @@ export async function putPetCtrl(req: Request, res: Response<UpdatedResponse>) {
     req,
     res,
     petServices.updatePet,
-    ValidatorFactory.buildUpdateValidator(Pet),
+    ValidatorFactory.buildUpdateValidator(Pet.schema),
   );
 }
 
@@ -46,7 +46,7 @@ export async function patchPetCtrl(req: Request, res: Response<UpdatedResponse>)
     req,
     res,
     petServices.updatePet,
-    ValidatorFactory.buildPatchValidator(Pet),
+    ValidatorFactory.buildPatchValidator(Pet.schema),
   );
 }
 

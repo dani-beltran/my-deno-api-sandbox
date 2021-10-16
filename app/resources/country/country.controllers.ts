@@ -37,7 +37,7 @@ export async function putCountryCtrl(req: Request, res: Response<UpdatedResponse
     req,
     res,
     countryServices.updateCountry,
-    ValidatorFactory.buildUpdateValidator(Country),
+    ValidatorFactory.buildUpdateValidator(Country.schema),
   );
 }
 
@@ -46,7 +46,7 @@ export async function patchCountryCtrl(req: Request, res: Response<UpdatedRespon
     req,
     res,
     countryServices.updateCountry,
-    ValidatorFactory.buildPatchValidator(Country),
+    ValidatorFactory.buildPatchValidator(Country.schema),
   );
 }
 
