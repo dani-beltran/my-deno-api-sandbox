@@ -1,4 +1,4 @@
-import { assertEquals, Dictionary } from "../../deps.ts";
+import { assertEquals, Dictionary } from "../../../deps.ts";
 
 export enum  ResponseType {
   json = 'json',
@@ -25,9 +25,10 @@ export class IntegrationTestFactory {
   }
 
   /**
-   * Builds a validation test function for request that send a body.
+   * Builds a validation test function for a request that sends a json body.
    * @param params.responseType It's the response data type expected. Can be json or text.
    * @param params.paramId It's the URL param id to assign to the end of the endpoint URL
+   * @returns a function that take two params: input as json and expected as a string
    */
   buildBodyValidationTest(params?: {
     paramId?: number,
@@ -53,6 +54,7 @@ export class IntegrationTestFactory {
   /**
    * Builds a validation test function for request that send search query parameters.
    * @param params.responseType It's the response data type expected. Can be json or text.
+   * @returns a function that take two params: input as an array of string pairs and expected as a string
    */
   buildSearchValidation(params?: {
     responseType?: ResponseType
