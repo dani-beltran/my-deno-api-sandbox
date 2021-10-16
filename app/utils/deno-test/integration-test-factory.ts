@@ -26,7 +26,7 @@ export class IntegrationTestFactory {
 
   /**
    * Builds a validation test function for a request that sends a json body.
-   * @param params.responseType It's the response data type expected. Can be json or text.
+   * @param params.responseType It's the response data type expected. Can be json or text. It's json by default.
    * @param params.paramId It's the URL param id to assign to the end of the endpoint URL
    * @returns a function that take two params: input as json and expected as a string
    */
@@ -43,17 +43,17 @@ export class IntegrationTestFactory {
         body: JSON.stringify(input),
       });
       assertEquals(res.status, 400);
-      if (params?.responseType === ResponseType.json) {
-        assertEquals(await res.json(), expected);
-      } else {
+      if (params?.responseType === ResponseType.text) {
         assertEquals(await res.text(), expected);  
+      } else {
+        assertEquals((await res.json()).error_message, expected);
       }
     };
   }
 
   /**
    * Builds a validation test function for request that send search query parameters.
-   * @param params.responseType It's the response data type expected. Can be json or text.
+   * @param params.responseType It's the response data type expected. Can be json or text. It's json by default.
    * @returns a function that take two params: input as an array of string pairs and expected as a string
    */
   buildSearchValidation(params?: {
@@ -67,10 +67,10 @@ export class IntegrationTestFactory {
       url = url.substr(0, url.length - 1);
       const res = await fetch(url, {method: this.method, headers: this.headers});
       assertEquals(res.status, 400);
-      if (params?.responseType === ResponseType.json) {
-        assertEquals(await res.json(), expected);
-      } else {
+      if (params?.responseType === ResponseType.text) {
         assertEquals(await res.text(), expected);  
+      } else {
+        assertEquals((await res.json()).error_message, expected);
       }
     };
   }

@@ -322,9 +322,9 @@ const getPetSuite: TestSuite<PetSuiteContext> = new TestSuite({
 test(getPetSuite, "should return 404 not found if pet doesn't exist", async (context: PetSuiteContext) => {
   const url = `${context.endpointUrl}/999`;
   const res = await fetch(url, {method: context.method, headers: context.headers});
-  const resBody = await res.text();
+  const resBody = await res.json();
   assertEquals(res.status, 404);
-  assertEquals(resBody, 'Not found');
+  assertEquals(resBody?.error, 'notFound');
 });
 
 test(getPetSuite, "should return a pet", async (context: PetSuiteContext) => {
@@ -437,9 +437,9 @@ test(updatePetSuite, "should return 404 not found if resource doesn't exist", as
       species: Species.Dog
     }),
   });
-  const resBody = await res.text();
+  const resBody = await res.json();
   assertEquals(res.status, 404);
-  assertEquals(resBody, 'Not found');
+  assertEquals(resBody?.error, 'notFound');
 });
 
 test(updatePetSuite, "should return 200 and modify only one resource", async (context: PetSuiteContext) => {
@@ -558,9 +558,9 @@ test(patchPetSuite, "should return 404 not found if resource doesn't exist", asy
       name: '  test-dog  ',
     }),
   });
-  const resBody = await res.text();
+  const resBody = await res.json();
   assertEquals(res.status, 404);
-  assertEquals(resBody, 'Not found');
+  assertEquals(resBody?.error, 'notFound');
 });
 
 test(patchPetSuite, "should return 200 and update one resource", async (context: PetSuiteContext) => {
@@ -650,9 +650,9 @@ test(deletePetSuite, "should return 404 not found if resource doesn't exist", as
     method: context.method, 
     headers: context.headers,
   });
-  const resBody = await res.text();
+  const resBody = await res.json();
   assertEquals(res.status, 404);
-  assertEquals(resBody, 'Not found');
+  assertEquals(resBody?.error, 'notFound');
 });
 
 test(deletePetSuite, "should return 200 and delete one resource", async (context: PetSuiteContext) => {
