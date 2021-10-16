@@ -1,57 +1,49 @@
 // deno-lint-ignore-file no-explicit-any
 export class ApiError {
-  rawError: any;
-  statusCode = 500;
-  message = '';
+  readonly rawError: any;
+  readonly statusCode: number;
+  readonly message: string;
+  readonly errorCode: string;
+  readonly errorDefinitions = [
+    {
+      statusCode: 400,
+      code: 'notValid'
+    },
+    {
+      statusCode: 401,
+      code: 'notAuthorized'
+    },
+    {
+      statusCode: 403,
+      code: 'forbidden'
+    },
+    {
+      statusCode: 404,
+      code: 'notFound'
+    },
+  ]
 
   constructor(error: any) {
     this.rawError = error;
-    this.identifyError();
-  }
-
-  private identifyError() {
-    if (this.isNotFoundError()) {
-      this.statusCode = 404;
-      this.message = this.rawError?.message || 'Not found';
-      return;
-    }
-    if (this.isNotValidError()) {
-      this.statusCode = 400;
-      this.message = this.rawError?.message || 'Bad request';
-      return;
-    }
-    if (this.isNotAuthorizedError()) {
-      this.statusCode = 401;
-      this.message = this.rawError?.message || 'Not Authorized';
-    }
-    if (this.isForbiddenError()) {
-      this.statusCode = 403;
-      this.message = this.rawError?.message || 'Forbidden';
+    this.statusCode = 500;
+    this.errorCode = 'unknown';
+    this.message = this.rawError.message || this.rawError;
+    // Find the defined error to what the rawError corresponds to.
+    let found = false;
+    for (let i = 0; i < this.errorDefinitions.length && !found; i++) {
+      const errorDefinition = this.errorDefinitions[i];
+      if (this.matchErrorDefinition(this.rawError, errorDefinition)) {
+        found = true;
+        this.statusCode = errorDefinition.statusCode;
+        this.errorCode = errorDefinition.code;
+      }
     }
   }
 
-  isNotFoundError() {
-    return this.rawError === 'notFound' 
-    || this.rawError?.code === 'notFound'
-    || this.rawError?.statusCode === 404;
-  }
-
-  isNotValidError() {
-    return this.rawError === 'notValid' 
-    || this.rawError?.code === 'notValid'
-    || this.rawError?.statusCode === 400;
-  }
-
-  isNotAuthorizedError() {
-    return this.rawError === 'notAuthorized' 
-    || this.rawError?.code === 'notAuthorized'
-    || this.rawError?.statusCode === 401;
-  }
-
-  isForbiddenError() {
-    return this.rawError === 'forbidden' 
-    || this.rawError?.code === 'forbidden'
-    || this.rawError?.statusCode === 403;
+  private matchErrorDefinition(rawError: any, errorDefinition: {statusCode: number, code: string}) {
+    return rawError === errorDefinition.code ||
+      rawError?.code === errorDefinition.code ||
+      rawError?.statusCode === errorDefinition.statusCode;
   }
 
 }

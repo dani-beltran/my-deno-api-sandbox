@@ -71,13 +71,12 @@ export class Controller {
   /**
    * function responsible for sending the failed http response
    */
-  private static sendError(res: Response, error: any) {
-    res.setStatus(error.statusCode || 500);
-    if (error.error instanceof Object) {
-      res.json(error.error);
-    } else {
-      res.end(error.error || error.message);
-    }
+  private static sendError(res: Response, error: ApiError) {
+    res.setStatus(error.statusCode);
+    res.json({
+      error: error.errorCode,
+      error_message: error.message
+    });
   }
 
   /**
