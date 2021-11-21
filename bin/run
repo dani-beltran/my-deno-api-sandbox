@@ -15,15 +15,15 @@
 #
 
 entryPoint="./app/main.ts"
-dependenciesFolder="./app/deps.ts"
 watcher=false
 update=false
 lint=false
 reload=false
 help=false
 check=false
+envFile=""
 
-while getopts wulrthc flag
+while getopts wulrthce: flag
 do
   case "${flag}" in
       c) check=true;;
@@ -32,6 +32,7 @@ do
       r) reload=true;;
       u) update=true;;
       w) watcher=true;;
+      e) envFile="${OPTARG}";;
   esac
 done
 
@@ -45,10 +46,15 @@ if "$help"; then
     echo "-r    Reload all cached dependencies before running server."
     echo "-u    Update locked dependencies before running the server."
     echo "-w    Run it in watcher mode. It runs a watcher and doesnt check typings for faster reloading. Useful for development."
+    echo "-e    Load environment variables from a file specified"
     echo ""
     exit
 fi
 
+if [ ! -z "${envFile}" ]; then 
+    echo "Loading environment variables from file $envFile"
+    export $(cat "$envFile" | xargs)
+fi
 if "$check"; then
     check_param=""
 else 
@@ -56,7 +62,7 @@ else
 fi
 if "$update"; then
     echo "Updating locked dependencies..."
-    deno cache --lock=lock.json --lock-write --unstable $check_param $dependenciesFolder
+    deno cache --lock=lock.json --lock-write --unstable $check_param $entryPoint
 fi
 if "$reload"; then
     echo "Reloading cached dependencies..."
