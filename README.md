@@ -94,3 +94,7 @@ that are wrapped in classes just for naming convenience.
 
 After generation, you need to add the router in /routes/mod.ts and the model
 in AppServer.ts registerModels function.
+
+### I get errors from a third party module dependency, how do I find the responsible module ?
+
+Run `deno info app/main.ts` to see the dependency tree.

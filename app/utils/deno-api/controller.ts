@@ -58,9 +58,7 @@ export class Controller {
     // send 200 and the payload as received in this method.
     //
     res.setStatus(payload?.statusCode || 200);
-    const responsePayload = payload?.payload !== undefined
-      ? payload.payload
-      : payload;
+    const responsePayload = payload?.payload ?? payload;
     if (responsePayload instanceof Object) {
       res.json(responsePayload);
     } else {
@@ -74,7 +72,7 @@ export class Controller {
   private static sendError(res: Response, error: ApiError) {
     res.setStatus(error.statusCode);
     res.json({
-      error: error.errorCode,
+      error: error.code,
       error_message: error.message
     });
   }

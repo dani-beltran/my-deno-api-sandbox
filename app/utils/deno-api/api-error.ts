@@ -1,61 +1,62 @@
 // deno-lint-ignore-file no-explicit-any
+import { lodash as _ } from '../../../deps.ts';
+
+export enum ErrorCode {
+  movedPermanently = 301,
+  notValid = 400,
+  notAuthorized = 401,
+  forbidden = 403,
+  notFound = 404,
+  methodNotAllowed = 405,
+  conflict = 409,
+  unknown = 500
+}
+
+/**
+ * Class that defines an error in the API.
+ */
 export class ApiError {
   readonly rawError: any;
   readonly statusCode: number;
   readonly message: string;
-  readonly errorCode: string;
-  readonly errorDefinitions = [
-    {
-      statusCode: 301,
-      code: 'movePermanently'
-    },
-    {
-      statusCode: 400,
-      code: 'notValid'
-    },
-    {
-      statusCode: 401,
-      code: 'notAuthorized'
-    },
-    {
-      statusCode: 403,
-      code: 'forbidden'
-    },
-    {
-      statusCode: 404,
-      code: 'notFound'
-    },
-    {
-      statusCode: 405,
-      code: 'methodNotAllowed'
-    },
-    {
-      statusCode: 409,
-      code: 'conflict'
-    },
-  ]
+  readonly code: string;
 
-  constructor(error: any) {
+  /**
+   * 
+   * @param error Raw error
+   * @param code The code of the error being created. If not provided it will try to guess the error code.
+   */
+  constructor(error: any, code?: ErrorCode) {
     this.rawError = error;
-    this.statusCode = 500;
-    this.errorCode = 'unknown';
-    this.message = this.rawError.message || this.rawError;
-    // Find the defined error to what the rawError corresponds to.
-    let found = false;
-    for (let i = 0; i < this.errorDefinitions.length && !found; i++) {
-      const errorDefinition = this.errorDefinitions[i];
-      if (this.matchErrorDefinition(this.rawError, errorDefinition)) {
-        found = true;
-        this.statusCode = errorDefinition.statusCode;
-        this.errorCode = errorDefinition.code;
+    this.message = error.message || error;
+    if (code) {
+      this.statusCode = code;
+      this.code = ErrorCode[code];
+    } else {
+      const val = this.identifyError(error);
+      this.statusCode = val.statusCode;
+      this.code = val.code;
+    } 
+  }
+  
+  /**
+   * Identify a raw error as an API error.
+   * @param error 
+   * @returns 
+   */
+  private identifyError(error: any) {
+    const code = error?.code || error;
+    if (_.isString(code) && _.isNumber(ErrorCode[code])) {
+      const statusCode = Number(ErrorCode[code]);
+      return {
+        statusCode,
+        code: ErrorCode[statusCode]
+      }
+    } else {
+      return {
+        statusCode: 500,
+        code: 'unknown'
       }
     }
   }
-
-  private matchErrorDefinition(rawError: any, errorDefinition: {statusCode: number, code: string}) {
-    return rawError === errorDefinition.code ||
-      rawError?.code === errorDefinition.code ||
-      rawError?.statusCode === errorDefinition.statusCode;
-  }
-
 }
