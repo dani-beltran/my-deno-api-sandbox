@@ -1,0 +1,35 @@
+#!/bin/bash -e
+entryPoint="./app/main.ts"
+dependencyTree=false
+output=''
+help=false
+
+while getopts hto: flag
+do
+  case "${flag}" in
+      t) dependencyTree=true;;
+      o) output="${OPTARG}";;
+      h) help=true;;
+  esac
+done
+
+if "$help"; then
+    echo ""
+    echo "This script prints information about the app"
+    echo "OPTIONS: "
+    echo "-t    Prints the dependency tree of the app"
+    echo "-o    Prints the output in the specified file"
+    echo "-h    Show help instructions on this script"
+    echo ""
+    exit
+fi
+
+if "$dependencyTree"; then
+    echo "Printing dependency tree..."
+    if [ ! -z "${output}" ]; then 
+      echo "Generating file $output"
+      deno info $entryPoint > $output
+    else
+      deno info $entryPoint
+    fi
+fi
