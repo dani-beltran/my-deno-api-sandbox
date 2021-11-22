@@ -19,8 +19,9 @@ import {
 } from "../../utils/deno-api/schema-definitions.ts";
 import { pathJoin } from "../../../deps.ts";
 import { Pet } from "./pet.model.ts";
+import { IApiRouter } from "../../utils/deno-api/types.ts";
 
-export const PetRouter = {
+export const PetRouter: IApiRouter = {
   /**
    * Returns the router path
    * @param basePath 

@@ -1,19 +1,45 @@
-import { Opine, pathJoin, Router } from "../../../deps.ts";
-import * as ssoControllers from './auth.controllers.ts';
+import { pathJoin, string } from "../../../deps.ts";
+import { getBodyValidation, getQueryValidation, getRouter } from "../../utils/deno-api/api-methods.ts";
+import { getController } from "../../utils/deno-api/api-methods.ts";
+import { extractAccessToken } from "../../utils/deno-api/middleware-fn.ts";
+import { IApiRouter } from "../../utils/deno-api/types.ts";
+import { getUserInfo } from "./auth.services.ts";
+import { createToken, getAuthData } from "./auth.services.ts";
 
-export const AuthRouter = {
+export const AuthRouter: IApiRouter = {
   /**
-   * Registers the routes for this resource in the app server.
-   * @param app 
+   * Returns the router path
+   * @param basePath
+   * @returns
    */
-  registerRoutes: (app: Opine, basePath: string) => {
-    const router = new Router();
-
-    router.get("/", ssoControllers.getAuthDataCtrl);
-    router.post("/token", ssoControllers.createTokenCtrl);
-    router.get("/user-info", ssoControllers.getUserInfoCtrl);
-    
-    const path = pathJoin(basePath, 'auth');
-    app.use(path, router);
-  }
-}
+  getPath: (basePath: string) => {
+    return pathJoin(basePath, "auth");
+  },
+  /**
+   * Returns its router
+   */
+  getRouter: () => {
+    return getRouter([{
+      method: "get",
+      path: "/",
+      validation: [ getQueryValidation({
+        redirect_uri: string.normalize().trim(),
+      })],
+      controller: getController(getAuthData),
+    }, {
+      method: "post",
+      path: "/token",
+      validation: [ getBodyValidation({
+        auth_code: string.normalize().trim().optional(),
+        redirect_uri: string.normalize().trim(),
+        refresh_token: string.normalize().trim().optional()
+      })],
+      controller: getController(createToken),
+    }, {
+      method: "get",
+      path: "/user-info",
+      beforeValidation: [extractAccessToken],
+      controller: getController(getUserInfo),
+    }]);
+  },
+};

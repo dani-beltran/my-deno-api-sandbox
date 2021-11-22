@@ -7,7 +7,7 @@ WORKDIR /home/deno/srv
 # Install dependencies
 COPY deps.ts deps.ts
 COPY lock.json lock.json
-RUN deno cache --unstable --lock=lock.json deps.ts
+RUN deno cache --unstable --lock=lock.json --no-check deps.ts
 
 # Add source code
 COPY bin bin

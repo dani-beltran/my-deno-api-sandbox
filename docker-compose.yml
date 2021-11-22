@@ -34,8 +34,8 @@ services:
       ENV: dev
       AUTH_HOST: auth-server:8080
       AUTH_CLIENT_ID: deno-sandbox
-      AUTH_CLIENT_SECRET: 66809fe3-3235-475f-aff5-e8aba041308b
-      AUTH_REALM: myrealm
+      AUTH_CLIENT_SECRET: c087e422-93e7-4b0f-b1d2-2ff2a11eacb3
+      AUTH_REALM: deno-realm
       AUTH_SSL: "false"
 volumes:
   auth_postgresql_data:

@@ -16,7 +16,7 @@ import { PlayerRouter } from "./resources/player/player.router.ts";
 import { SsoServer } from "./utils/deno-auth/sso-server.ts";
 import { AuthRouter } from "./resources/auth/auth.router.ts";
 import type { authServerConfig } from "./utils/deno-auth/types.ts";
-
+import { IApiRouter } from "./utils/deno-api/types.ts";
 
 /**
  * The application server that runs the RESTful API.
@@ -126,14 +126,19 @@ export class AppServer {
   /**
    * Register the routes in the app server.
    * @param app
+   * @param basePath
    */
   private registerRoutes(app: Opine, basePath = "") {
     this.registerOtherRoutes(app, basePath);
     // Resources routes
-    app.use(PetRouter.getPath(basePath), PetRouter.getRouter());
-    PlayerRouter.registerRoutes(app, basePath);
-    CountryRouter.registerRoutes(app, basePath);
-    AuthRouter.registerRoutes(app, basePath);
+    this.addRouter(CountryRouter, app, basePath);
+    this.addRouter(PetRouter, app, basePath);
+    this.addRouter(PlayerRouter, app, basePath);
+    this.addRouter(AuthRouter, app, basePath);
+  }
+
+  private addRouter(router: IApiRouter, app: Opine, basePath: string) {
+    app.use(router.getPath(basePath), router.getRouter());
   }
 
   /**

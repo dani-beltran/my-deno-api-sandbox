@@ -18,7 +18,7 @@ export function getController(
 ) {
   return async (req: Request, res: Response) => {
     try {
-      const params = { ...req.params, ...req.query, ...req.body };
+      const params = { ...req.app.locals, ...res.locals, ...req.params, ...req.query, ...req.body };
       const payload = await service(params);
       sendResponse(res, payload, successStatusCode);
     } catch (error) {
@@ -44,7 +44,8 @@ function sendError(res: Response, error: ApiError) {
   res.setStatus(error.statusCode);
   res.json({
     error_code: error.code,
-    error_message: error.message
+    error_message: error.message,
+    raw_error: error.rawError
   });
 }
 
