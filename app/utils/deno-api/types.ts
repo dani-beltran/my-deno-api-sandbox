@@ -1,6 +1,8 @@
 // deno-lint-ignore-file no-explicit-any
+import { NextFunction } from "../../../deps.ts";
 import { Model, Type } from "./deps.ts";
 import { listSchema } from "./schema-definitions.ts";
+import { Request, Response } from "./deps.ts";
 
 
 /**
@@ -26,3 +28,15 @@ export type UpdatedResponse = { affectedRows: number };
  * 
  */
 export type ListParams = Type<typeof listSchema>;
+
+export type Middleware = (req: Request, res: Response, next: NextFunction) => void | Promise<void>;
+
+export type RouteSchema = {
+  method: 'get' | 'post' | 'put' | 'patch' | 'delete',
+  path: string,
+  beforeAuth?: Middleware[],
+  auth?: Middleware[],
+  beforeValidation?: Middleware[],
+  validation?: Middleware[],
+  controller: (req: Request, res: Response) => Promise<void>
+};

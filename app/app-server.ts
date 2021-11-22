@@ -130,7 +130,7 @@ export class AppServer {
   private registerRoutes(app: Opine, basePath = "") {
     this.registerOtherRoutes(app, basePath);
     // Resources routes
-    PetRouter.registerRoutes(app, basePath);
+    app.use(PetRouter.getPath(basePath), PetRouter.getRouter());
     PlayerRouter.registerRoutes(app, basePath);
     CountryRouter.registerRoutes(app, basePath);
     AuthRouter.registerRoutes(app, basePath);

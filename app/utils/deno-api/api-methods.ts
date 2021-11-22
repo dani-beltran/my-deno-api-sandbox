@@ -2,7 +2,8 @@
 import { ApiError, ErrorCode } from "./api-error.ts";
 import { Request, Response, Schema } from "./deps.ts";
 import { entriesToDictionaryReducer } from "../../utils/generics.ts";
-import { NextFunction, ValidationError } from "../../../deps.ts";
+import { NextFunction, Router, ValidationError } from "../../../deps.ts";
+import { RouteSchema } from "./types.ts";
 
 /**
  * Returns a controller that runs the provided service and send the according
@@ -103,4 +104,39 @@ function runValidation(params: any, schema: any) {
   }
   // Remove the params with undefined values
   return Object.entries(validatedParams).reduce(entriesToDictionaryReducer, {});
+}
+
+/**
+ * @param routesSchema Schema defining the routes.
+ * @returns an Opine router 
+ */
+export function getRouter(routesSchema: RouteSchema[]) {
+  const router = new Router();
+  routesSchema.forEach(route => {
+    (router as any)[route.method](route.path, [
+      ...(route.beforeAuth ?? []),
+      ...(route.auth ?? []), 
+      ...(route.beforeValidation ?? []),
+      ...(route.validation ?? []),
+      route.controller
+    ]);
+  });
+  return router;
+}
+
+/**
+ * Converts all items in a validation schema to optional.
+ * Useful for adding validation to a PATCH endpoint.
+ * @param schema 
+ * @returns schema
+ */
+export function convertAllSchemaItemsToOptional(
+  schema: { [key: string]: any },
+) {
+  const keys = Object.keys(schema);
+  const res = {} as any;
+  keys.forEach((key) => {
+    res[key] = Schema.either(Schema.either(null, undefined), schema[key]);
+  });
+  return res;
 }
