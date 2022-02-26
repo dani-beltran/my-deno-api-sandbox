@@ -16,11 +16,32 @@ bin/run
 
 ```
 OPTIONS
- -d        Run it in development mode. It runs a watcher and doesn't check 
-           typings for faster reloading.
- -u        Update locked dependencies before running the server.
- -l        Run linter before running the server.
- -r        Reload all cached dependencies before running server.
+  -c    Run with TypeScript type checking.
+  -e    Load environment variables from a file specified.
+  -h    Show help instructions on this script.
+  -l    Run linter before running the server.
+  -r    Reload all cached dependencies before running server.
+  -u    Update locked dependencies before running the server.
+  -w    Run it in watcher mode. It runs a watcher and doesn't check typings for faster reloading. Useful for development.
+```
+
+### For development
+
+Crete a .env file in the root folder, define the environment variables, for example:
+```
+PORT=8000
+ENV=dev
+AUTH_HOST=auth-server:8080
+AUTH_CLIENT_ID=deno-sandbox
+AUTH_CLIENT_SECRET=66809fe3-3235-475f-aff5-e8aba041308b
+AUTH_REALM=myrealm
+AUTH_SSL="false"
+```
+
+Then run:
+
+```
+./bin/run -w -e .env
 ```
 
 ## How to run tests
