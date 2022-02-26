@@ -83,13 +83,6 @@ to other apps.
 Deno uses relative path importing. To use absolute paths you need to implement
 import-map.json
 
-### Why using abstract classes for controllers, services and routes ?
-
-To make sure they are not instantiated. This is because my intention is to make
-these classes stateless and immutable, and so, predictable. They will always 
-behave the same for every request. They behave more like a collection of functions 
-that are wrapped in classes just for naming convenience. 
-
 ### I generated a controller, service, router and model for a resource, but it doesn't work
 
 After generation, you need to add the router in /routes/mod.ts and the model
