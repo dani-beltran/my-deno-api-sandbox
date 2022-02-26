@@ -21,7 +21,7 @@ services:
       KEYCLOAK_ADMIN_USER: user
       KEYCLOAK_ADMIN_PASSWORD: bitnami
       KEYCLOAK_DATABASE_HOST: auth-postgresql
-      KEYCLOAK_DATABASE_PORT: 8081
+      KEYCLOAK_DATABASE_PORT: 5432
       KEYCLOAK_DATABASE_NAME: bitnami_keycloak
       KEYCLOAK_DATABASE_USER: bn_keycloak
       # KEYCLOAK_DATABASE_PASSWORD: password
