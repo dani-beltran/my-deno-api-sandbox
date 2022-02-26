@@ -27,15 +27,12 @@ OPTIONS
 
 ### For development
 
+Best option is to run the docker-compose file, but you can also try the following:
+
 Crete a .env file in the root folder, define the environment variables, for example:
 ```
 PORT=8000
 ENV=dev
-AUTH_HOST=auth-server:8080
-AUTH_CLIENT_ID=deno-sandbox
-AUTH_CLIENT_SECRET=66809fe3-3235-475f-aff5-e8aba041308b
-AUTH_REALM=myrealm
-AUTH_SSL="false"
 ```
 
 Then run:
