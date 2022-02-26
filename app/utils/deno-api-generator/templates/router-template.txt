@@ -1,22 +1,75 @@
-import { Opine, pathJoin, Router } from "../../../deps.ts";
-import * as {{name}}Controllers from "./{{name}}.controllers.ts";
+import {
+  add{{capitalizedName}},
+  delete{{capitalizedName}},
+  get{{capitalizedName}},
+  list{{capitalizedName}},
+  update{{capitalizedName}},
+} from "./{{name}}.services.ts";
+import {
+  convertAllSchemaItemsToOptional,
+  getBodyValidation,
+  getController,
+  getParamsValidation,
+  getQueryValidation,
+  getRouter,
+} from "../../utils/deno-api/api-methods.ts";
+import {
+  getSchema,
+  listSchema,
+} from "../../utils/deno-api/schema-definitions.ts";
+import { pathJoin } from "../../../deps.ts";
+import { {{capitalizedName}} } from "./{{name}}.model.ts";
+import { IApiRouter } from "../../utils/deno-api/types.ts";
 
-export const {{capitalizedName}}Router = {
+export const {{capitalizedName}}Router: IApiRouter = {
   /**
-   * Registers the routes for this resource in the app server.
-   * @param app 
+   * Returns the router path
+   * @param basePath 
+   * @returns 
    */
-  registerRoutes: (app: Opine, basePath: string) => {
-    const router = new Router();
-
-    router.post("/", {{name}}Controllers.add{{capitalizedName}}Ctrl);
-    router.get("/:id", {{name}}Controllers.get{{capitalizedName}}Ctrl);
-    router.get("/", {{name}}Controllers.list{{capitalizedName}}Ctrl);
-    router.put("/:id", {{name}}Controllers.put{{capitalizedName}}Ctrl);
-    router.patch("/:id", {{name}}Controllers.patch{{capitalizedName}}Ctrl);
-    router.delete("/:id", {{name}}Controllers.delete{{capitalizedName}}Ctrl);
-
-    const path = pathJoin(basePath, '{{name}}s');
-    app.use(path, router);
-  }
-}
+  getPath: (basePath: string) => {
+    return pathJoin(basePath, "{{name}}s");
+  },
+  /**
+   * Returns its router
+   */
+  getRouter: () => {
+    return getRouter([{
+      method: "post",
+      path: "/",
+      validation: [getBodyValidation({{capitalizedName}}.schema)],
+      controller: getController(add{{capitalizedName}}, 201),
+    }, {
+      method: "get",
+      path: "/:id",
+      validation: [getParamsValidation(getSchema)],
+      controller: getController(get{{capitalizedName}}),
+    }, {
+      method: "get",
+      path: "/",
+      validation: [getQueryValidation(listSchema)],
+      controller: getController(list{{capitalizedName}}),
+    }, {
+      method: "put",
+      path: "/:id",
+      validation: [
+        getParamsValidation(getSchema),
+        getBodyValidation({{capitalizedName}}.schema),
+      ],
+      controller: getController(update{{capitalizedName}}),
+    }, {
+      method: "patch",
+      path: "/:id",
+      validation: [
+        getParamsValidation(getSchema),
+        getBodyValidation(convertAllSchemaItemsToOptional({{capitalizedName}}.schema)),
+      ],
+      controller: getController(update{{capitalizedName}}),
+    }, {
+      method: "delete",
+      path: "/:id",
+      validation: [getParamsValidation(getSchema)],
+      controller: getController(delete{{capitalizedName}}),
+    }]);
+  },
+};

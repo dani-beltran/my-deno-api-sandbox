@@ -12,17 +12,15 @@
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 entryPoint="$SCRIPT_DIR/src/generate.ts"
-controller=false
 model=false
 router=false
 service=false
 help=false
 resourcePath="./app/resources/$2";
 
-while getopts cmrsh flag
+while getopts mrsh flag
 do
   case "${flag}" in
-      c) controller=true;;
       m) model=true;;
       r) router=true;;
       s) service=true;;
@@ -30,13 +28,12 @@ do
   esac
 done
 
-if "$help" || [ -z "$2" ] || [ $controller == "false" ] && [ $service == "false" ] && [ $model == "false" ] && [ $router == "false" ]; then
+if "$help" || [ -z "$2" ] || [ $service == "false" ] && [ $model == "false" ] && [ $router == "false" ]; then
     echo ""
     echo "This script generates controllers, services, models and routers."
     echo "Pass an option and a name for the component."
     echo ""
     echo "OPTIONS: "
-    echo "-c    Generates a controller."
     echo "-m    Generates a model."
     echo "-r    Generates a router."
     echo "-s    Generates a service."
@@ -45,10 +42,6 @@ if "$help" || [ -z "$2" ] || [ $controller == "false" ] && [ $service == "false"
 fi
 
 mkdir $resourcePath
-
-if "$controller" && [ ! -z "$2" ]; then
-    deno run --allow-read --allow-write --no-check $entryPoint controller $2 $resourcePath
-fi
 
 if "$model" && [ ! -z "$2" ]; then
     deno run --allow-read  --allow-write --no-check $entryPoint model $2 $resourcePath
