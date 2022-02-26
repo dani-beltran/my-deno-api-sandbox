@@ -1,3 +1,4 @@
+import { pathJoin } from "../../../deps.ts";
 import { jsonToEncodedForm } from "../generics.ts";
 import { tokenResponse } from "./types.ts";
 
@@ -21,6 +22,7 @@ export class SsoServer {
   private readonly realm: string;
   private readonly host: string;
   private readonly secure: boolean;
+  private certs: any;
 
   /**
    * @param opts.host
@@ -149,5 +151,23 @@ export class SsoServer {
     const path = this.authServerUrl.pathname + '/logout';
     const url = new URL(path, this.authServerUrl);
     return url.toString();
+  }
+
+  /**
+   * 
+   * @returns 
+   */
+  async fetchCerts() {
+    const url = pathJoin(this.authServerUrl.toString(), '/certs');
+    const res = await fetch(url, {
+      method: 'GET', 
+    });
+    this.certs = await res.json();
+    return this.certs;
+  }
+
+  validateToken() {
+    // TODO Use a JWT lib to verify the token with the public cert
+    // jwt.verify(token, publicCertStr, algorithm)
   }
 }

@@ -91,3 +91,11 @@ in AppServer.ts registerModels function.
 ### I get errors from a third party module dependency, how do I find the responsible module ?
 
 Run `deno info app/main.ts` to see the dependency tree.
+
+## ToDo
+
+### Implement endpoint authentication **In progress**
+Using Keycloak auth open source solution. 
+
+### Update deno api generator lib
+
