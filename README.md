@@ -97,5 +97,4 @@ Run `deno info app/main.ts` to see the dependency tree.
 ### Implement endpoint authentication **In progress**
 Using Keycloak auth open source solution. 
 
-### Update deno api generator lib
 
