@@ -9,7 +9,7 @@ export class Country extends Model {
   static table = "countries";
   static timestamps = true;
   static fields = {
-    id: {
+    countryId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
     },

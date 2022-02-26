@@ -4,8 +4,8 @@ import {
   opine,
   Opine,
   pathJoin,
+  PostgresConnector,
   Server,
-  SQLite3Connector,
 } from "../deps.ts";
 import { Country } from "./resources/country/country.model.ts";
 import { CountryRouter } from "./resources/country/country.router.ts";
@@ -15,7 +15,7 @@ import { Player } from "./resources/player/player.model.ts";
 import { PlayerRouter } from "./resources/player/player.router.ts";
 import { SsoServer } from "./utils/deno-auth/sso-server.ts";
 import { AuthRouter } from "./resources/auth/auth.router.ts";
-import type { authServerConfig } from "./utils/deno-auth/types.ts";
+import type { authServerConfig, dbConfig } from "./utils/deno-auth/types.ts";
 import { IApiRouter } from "./utils/deno-api/types.ts";
 
 /**
@@ -27,22 +27,22 @@ export class AppServer {
   private httpServer?: Server;
   private readonly flushDB: boolean;
   public readonly debug: boolean;
-  public readonly env: string;
   public readonly port: number;
   public readonly authServerConfig: authServerConfig;
+  public readonly dbConfig: dbConfig;
 
   constructor(opts: {
     port: number;
-    env?: string;
     debug?: boolean;
     flushDB?: boolean;
     authServerConfig: authServerConfig;
+    dbConfig: dbConfig;
   }) {
-    this.env = opts.env ?? "production";
     this.port = opts.port;
     this.debug = opts.debug ?? false;
     this.flushDB = opts.flushDB ?? false;
     this.authServerConfig = opts.authServerConfig;
+    this.dbConfig = opts.dbConfig;
   }
 
   /**
@@ -78,9 +78,11 @@ export class AppServer {
    * @returns
    */
   private connectDB() {
-    const str = (this.env !== "production") ? "." + this.env : "";
-    const connector = new SQLite3Connector({
-      filepath: `./database${str}.sqlite`,
+    const connector = new PostgresConnector({
+      host: this.dbConfig.host,
+      username: this.dbConfig.user,
+      password: this.dbConfig.password || '',
+      database: this.dbConfig.database,
     });
     return new Database(connector, { debug: true });
   }

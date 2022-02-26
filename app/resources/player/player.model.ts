@@ -12,7 +12,7 @@ export class Player extends Model {
   static table = "players";
   static timestamps = true;
   static fields = {
-    id: {
+    playerId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
     },

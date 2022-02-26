@@ -1,33 +1,22 @@
-import { signal } from "../deps.ts";
 import { AppServer } from "./app-server.ts";
-import {
-  AUTH_CLIENT_ID,
-  AUTH_CLIENT_SECRET,
-  AUTH_HOST,
-  AUTH_REALM,
-  AUTH_SSL,
-  ENV,
-  PORT,
-} from "./env.ts";
+import * as env from "./env.ts";
 
-console.info("Starting server...");
+console.info("Starting server...", env.DB_FLUSH);
 const appServer = new AppServer({
-  port: Number(PORT),
-  env: ENV,
-  flushDB: false,
+  port: Number(env.PORT),
+  flushDB: env.DB_FLUSH ? true : false,
   authServerConfig: {
-    host: AUTH_HOST,
-    clientId: AUTH_CLIENT_ID,
-    clientSecret: AUTH_CLIENT_SECRET,
-    realm: AUTH_REALM,
-    secure: AUTH_SSL === "true"
+    host: env.AUTH_HOST,
+    clientId: env.AUTH_CLIENT_ID,
+    clientSecret: env.AUTH_CLIENT_SECRET,
+    realm: env.AUTH_REALM,
+    secure: env.AUTH_SSL === "true"
   },
+  dbConfig: {
+    host: env.DB_HOST,
+    user: env.DB_USER,
+    password: env.DB_PASSWORD,
+    database: env.DB_DATABASE
+  }
 });
 appServer.run();
-
-console.info("Press Ctrl-C to stop the server");
-for await (const _ of signal("SIGUSR1", "SIGINT")) {
-  console.info("Server interrupted!");
-  await appServer.stop();
-  Deno.exit();
-}

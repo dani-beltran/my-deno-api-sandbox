@@ -2,6 +2,8 @@ version: "3.9"
 services:
   auth-postgresql:
     image: docker.io/bitnami/postgresql:11
+    ports:
+      - "8081:5432"
     environment:
       # ALLOW_EMPTY_PASSWORD is recommended only for development.
       ALLOW_EMPTY_PASSWORD: "yes"
@@ -19,10 +21,21 @@ services:
       KEYCLOAK_ADMIN_USER: user
       KEYCLOAK_ADMIN_PASSWORD: bitnami
       KEYCLOAK_DATABASE_HOST: auth-postgresql
-      KEYCLOAK_DATABASE_PORT: 5432
+      KEYCLOAK_DATABASE_PORT: 8081
       KEYCLOAK_DATABASE_NAME: bitnami_keycloak
       KEYCLOAK_DATABASE_USER: bn_keycloak
       # KEYCLOAK_DATABASE_PASSWORD: password
+  api-postgresql:
+    image: docker.io/bitnami/postgresql:11
+    ports:
+      - "8001:5432"
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      ALLOW_EMPTY_PASSWORD: "yes"
+      POSTGRESQL_USERNAME: deno_api_user
+      POSTGRESQL_DATABASE: deno_api
+    volumes:
+      - 'deno_api_postgresql_data:/deno_api/postgresql'
   api-server:
     build: .
     ports:
@@ -31,12 +44,18 @@ services:
       - auth-server
     environment:
       PORT: 8000
-      ENV: dev
       AUTH_HOST: auth-server:8080
       AUTH_CLIENT_ID: deno-sandbox
       AUTH_CLIENT_SECRET: c087e422-93e7-4b0f-b1d2-2ff2a11eacb3
       AUTH_REALM: deno-realm
       AUTH_SSL: "false"
+      DB_HOST: api-postgresql
+      DB_USER: deno_api_user
+      DB_DATABASE: deno_api
+      DB_PASSWORD: ""
+      DB_FLUSH: 1
 volumes:
   auth_postgresql_data:
+    driver: local
+  deno_api_postgresql_data:
     driver: local

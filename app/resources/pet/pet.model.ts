@@ -17,7 +17,7 @@ export class Pet extends Model {
   static table = "pets";
   static timestamps = true;
   static fields = {
-    id: {
+    petId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
     },
